@@ -22,6 +22,9 @@ export const Merchantdatacollection = () => {
   });
 
   const [subCategories, setSubCategories] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
+  const [showLoadingPopup, setShowLoadingPopup] = useState(false); // Track loading popup visibility
+
 
   const city = {
     "Mumbai" : ['Juhu', 'Andheri (W)'],
@@ -69,20 +72,35 @@ export const Merchantdatacollection = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    
-    // Use Compressor.js to compress the image before setting it to formData
-    new Compressor(files[0], {
-      quality: 0.5, // Set image quality (0.0 to 1.0)
-      success(result) {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: result, // Set the compressed image
-        }));
-      },
-      error(err) {
-        console.error("Error compressing image:", err.message);
-      }
-    });
+  
+    if (files && files[0]) {
+      const compressImage = (file, quality) => {
+        new Compressor(file, {
+          quality, // Compression quality
+          success: (compressedFile) => {
+            if (compressedFile.size > 500 * 1024 && quality > 0.1) {
+              // If the file is still > 500KB, recursively compress with lower quality
+              compressImage(compressedFile, quality - 0.1);
+            } else if (compressedFile.size <= 500 * 1024) {
+              // Set compressed file to state if size is within limit
+              setFormData((prevData) => ({
+                ...prevData,
+                [name]: compressedFile,
+              }));
+            } else {
+              alert('Unable to compress the image to 500KB. Please upload a smaller file.');
+            }
+          },
+          error: (err) => {
+            console.error('Image compression error:', err);
+            alert('An error occurred during image compression. Please try again.');
+          },
+        });
+      };
+  
+      // Start compression with initial quality
+      compressImage(files[0], 0.8); // Start with a quality of 0.8
+    }
   };
 
   const handleChange = (e) => {
@@ -94,26 +112,67 @@ export const Merchantdatacollection = () => {
 
     if (name === 'category') {
       setSubCategories(categories[value] || []);
-      setFormData((prevData) => ({
-        ...prevData,
-        subCategory: '', // Reset subcategory when category changes
-      }));
+      setFormData((prevData) => ({ ...prevData, subCategory: '' }));
     }
 
-      // Handle city selection to update area options
-      if (name === 'city') {
-        setFormData((prevData) => ({
-          ...prevData,
-          area: '', // Reset area when city changes
-        }));
-      }
+    if (name === 'city') {
+      setFormData((prevData) => ({ ...prevData, area: '' }));
+    }
   };
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
+    setIsSubmitting(true); // Disable the submit button
+    setShowLoadingPopup(true); // Show loading popup
+
+    try {
+      const dataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value) {
+          dataToSend.append(key, value);
+        }
+      });
+
+      const response = await fetch('http://localhost:8050/api/addmerchantdata', {
+        method: 'POST',
+        body: dataToSend,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Merchant data submitted:', result);
+        alert('Data submitted successfully!');
+        // Optionally reset form
+        setFormData({
+          city: '',
+          area: '',
+          category: '',
+          subCategory: '',
+          nameOfBusiness: '',
+          contactNo: '',
+          address: '',
+          website: '',
+          instagram: '',
+          facebook: '',
+          youtube: '',
+          comment: '',
+          shopFrontImage: null,
+          streetImage: null,
+          mobileNumber: localStorage.getItem('mobileNumber') || '',
+        });
+        setSubCategories([]);
+      } else {
+        const error = await response.json();
+        console.error('Submission error:', error);
+        alert('Failed to submit data.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An unexpected error occurred.');
+    } finally {
+      setIsSubmitting(false); // Enable the submit button
+      setShowLoadingPopup(false); // Hide loading popup
+    }
   };
 
   return (
@@ -293,7 +352,9 @@ export const Merchantdatacollection = () => {
           )}
         </div>
         <div>
-          <button type="submit">Submit</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </button>
         </div>
       </form>
     </div>

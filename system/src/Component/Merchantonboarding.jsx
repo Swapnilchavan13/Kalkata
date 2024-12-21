@@ -15,7 +15,7 @@ export const Merchantonboarding = () => {
     yearsOfBusiness: '',
     numberOfEmployees: '',
     productDescription: '',
-    preferredCategories: [],
+    preferredCategories: '',
     offerFrequency: '',
     specificRequirements: '',
     panTanNumber: '',
@@ -60,20 +60,44 @@ export const Merchantonboarding = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Include user ID with the form data
-    const dataToSubmit = { ...formData, signature: signatureData };
-
-    // Log the form data to the console (or send it to the backend)
-    console.log(dataToSubmit);
-
-    // You can send this data to the backend here (e.g., using fetch or axios)
-
-    // Show success popup
-    setShowSuccessPopup(true);
-
+  
+    // Create a new FormData object
+    const dataToSend = new FormData();
+  
+    // Append form data to FormData object
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value) {
+        dataToSend.append(key, value);
+      }
+    });
+  
+    // Append signature data if available
+    if (signatureData) {
+      dataToSend.append('signature', signatureData);
+    }
+  
+    try {
+      // Send the form data to the backend (replace with your actual API endpoint)
+      const response = await fetch('http://localhost:8050/api/addmerchantdata', {
+        method: 'POST',
+        body: dataToSend,
+      });
+  
+      // Handle the response (success or error)
+      if (response.ok) {
+        console.log('Form submitted successfully');
+        setShowSuccessPopup(true);
+      } else {
+        console.error('Error submitting form');
+        // Optionally handle the error (e.g., show an error message)
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Optionally handle the error (e.g., show an error message)
+    }
+  
     // Clear form fields after submission
     setFormData({
       personName: '',
@@ -88,7 +112,7 @@ export const Merchantonboarding = () => {
       yearsOfBusiness: '',
       numberOfEmployees: '',
       productDescription: '',
-      preferredCategories: [],
+      preferredCategories: '',
       offerFrequency: '',
       specificRequirements: '',
       panTanNumber: '',
@@ -100,9 +124,12 @@ export const Merchantonboarding = () => {
       membershipPlan: '',
       panTanImage: null,
       gstinImage: null,
+      mobileNumber: localStorage.getItem('mobileNumber') || '',
     });
-    setSignatureData("");
+  
+    setSignatureData(""); // Reset signature
   };
+  
 
   const closePopup = () => {
     setShowSuccessPopup(false);
@@ -249,7 +276,7 @@ export const Merchantonboarding = () => {
               name="preferredCategories"
               value={formData.preferredCategories}
               onChange={handleChange}
-              multiple
+              
             >
               <option value="Category1">Category 1</option>
               <option value="Category2">Category 2</option>
