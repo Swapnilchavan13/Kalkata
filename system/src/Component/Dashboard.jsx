@@ -14,7 +14,10 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+       <img id='loginpinimg' src="https://localite.services/w_logo.png" alt="" />
+       <hr />
       <div className="dashboard-header">
+        
         <h1>Welcome to the Dashboard</h1>
       </div>
 
@@ -22,7 +25,7 @@ export const Dashboard = () => {
         <Link to="/merchantdata" className="dashboard-link">
           Merchant Data Collection
         </Link>
-        <Link to="/merchantonbording" className="dashboard-link">
+        <Link to="/merchantonboarding" className="dashboard-link">
           Merchant Onboarding
         </Link>
         <Link to="/merchantcontent" className="dashboard-link">

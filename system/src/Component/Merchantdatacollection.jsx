@@ -4,6 +4,7 @@ import Compressor from 'compressorjs'; // Make sure to install this library
 
 export const Merchantdatacollection = () => {
   const [formData, setFormData] = useState({
+    city: '',
     area: '',
     category: '',
     subCategory: '',
@@ -17,9 +18,15 @@ export const Merchantdatacollection = () => {
     comment: '',
     shopFrontImage: null,
     streetImage: null,
+    mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
   });
 
   const [subCategories, setSubCategories] = useState([]);
+
+  const city = {
+    "Mumbai" : ['Juhu', 'Andheri (W)'],
+    "Kolkata" : ['Park Street']
+  }
 
   const categories = {
     'FOOD & BEVERAGES': [
@@ -92,6 +99,14 @@ export const Merchantdatacollection = () => {
         subCategory: '', // Reset subcategory when category changes
       }));
     }
+
+      // Handle city selection to update area options
+      if (name === 'city') {
+        setFormData((prevData) => ({
+          ...prevData,
+          area: '', // Reset area when city changes
+        }));
+      }
   };
 
 
@@ -105,18 +120,42 @@ export const Merchantdatacollection = () => {
     <div>
       <h1>Merchant Data Collection</h1>
       <form onSubmit={handleSubmit}>
+      <div>
+        <label>Select City:</label>
+        <select
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select City</option>
+          {Object.keys(city).map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label>Select Area:</label>
+        <select
+          name="area"
+          value={formData.area}
+          onChange={handleChange}
+          required
+          disabled={!formData.city} // Disable area dropdown if no city is selected
+        >
+          <option value="">Select Area</option>
+          {formData.city && city[formData.city].map((area, index) => (
+            <option key={index} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+      </div>
         <div>
-          <label>Area:</label>
-          <input
-            type="text"
-            name="area"
-            value={formData.area}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Category:</label>
+          <label>Select Category:</label>
           <select
             name="category"
             value={formData.category}

@@ -7,7 +7,7 @@ import { Login } from './Component/Login';
 import ProtectedRoute from './Component/ProtectedRoute';
 import { Merchantcontent } from './Component/Merchantcontent';
 import { Merchantdatacollection } from './Component/Merchantdatacollection';
-import { Merchantonbording } from './Component/Merchantonbording';
+import { Merchantonboarding } from './Component/Merchantonboarding';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
           <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
           <Route path="/merchantcontent" element={<ProtectedRoute element={<Merchantcontent />} />} />
           <Route path="/merchantdata" element={<ProtectedRoute element={<Merchantdatacollection />} />} />
-          <Route path="/merchantonbording" element={<ProtectedRoute element={<Merchantonbording />} />} />
+          <Route path="/merchantonboarding" element={<ProtectedRoute element={<Merchantonboarding />} />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

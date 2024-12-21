@@ -8,20 +8,32 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(
     JSON.parse(localStorage.getItem("isAuthenticated")) || false
   );
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
-  // Save authentication state to localStorage whenever it changes
+  // Save authentication state and user to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
-  }, [isAuthenticated]);
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  }, [isAuthenticated, user]);
 
-  const login = () => setIsAuthenticated(true);
+  const login = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
+
   const logout = () => {
+    setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("isAuthenticated"); // Remove from localStorage on logout
+    localStorage.removeItem("user");
+    localStorage.removeItem('mobileNumber'); // Clear mobile number
+
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

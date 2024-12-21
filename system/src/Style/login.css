@@ -1,0 +1,98 @@
+
+  
+  /* Login Container */
+  .login-container {
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+  }
+  
+  #centreimgdiv {
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  #centreimgdiv input{
+    height: 60px;
+  }
+  
+  .loginpinimg {
+    width: 100px;
+    height: auto;
+  }
+  
+  #lheading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(39, 116, 116);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Form Styling */
+  .login-form {
+    background-color: rgba(154, 154, 154, 0.8);
+    /* padding: 30px; */
+    border-radius: 10px;
+    width: 95%;
+    /* max-width: 400px; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+ 
+  
+  /* Error Message */
+  .error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 15px;
+    }
+  
+    .login-form {
+      padding: 20px;
+    }
+  
+   
+  
+    .lheading {
+      font-size: 20px;
+    }
+  
+    input, button {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+   
+  
+    .lheading {
+      font-size: 18px;
+    }
+  
+    input {
+      font-size: 12px;
+    }
+
+    #loginbtn{
+        background-color: rgb(5, 119, 119);
+        width: 50%;
+        border-radius: 20px;
+    }
+  }
+  

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContex';
-import { Link, useNavigate } from 'react-router-dom';
-// import '../styles/login.css';
+import { useNavigate } from 'react-router-dom';
+import '../Style/login.css'
 
 export const Login = () => {
   const [merchants, setMerchants] = useState([]);
   const [mobileNumber, setMobileNumber] = useState('');
   const [loginPin, setLoginPin] = useState('');
-  const [error, setError] = useState('');
-  const { login, user } = useAuth(); // Include user from useAuth
+  const [ setError] = useState('');
+  const { login } = useAuth(); // Include login from useAuth
   const navigate = useNavigate();
 
   useEffect(() => {
     // If user is already logged in, redirect to dashboard
-    if (user) {
+    if (localStorage.getItem("isAuthenticated") === "true") {
       navigate('/dashboard');
     }
-  }, [user, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     const fetchMerchants = async () => {
@@ -41,7 +41,9 @@ export const Login = () => {
     );
 
     if (user) {
-      login(user); // Call login from AuthContext with the full user object
+      localStorage.setItem('mobileNumber', mobileNumber); // Save mobile number in localStorage
+
+      login(user); // Pass the full user object to login
       navigate('/dashboard'); // Redirect to the dashboard
     } else {
       setError('Invalid mobile number or PIN');
@@ -50,16 +52,15 @@ export const Login = () => {
 
   return (
     <div className="login-container" style={{ 
-      backgroundImage: "url('/bg2.png')", 
       backgroundSize: 'cover', 
       backgroundPosition: 'center', 
       backgroundRepeat: 'no-repeat' 
     }}>
       <div id='centreimgdiv'>
-        <img className='loginpinimg' src="Localite_icon.png" alt="" />
-        <br />
+        <img id='loginpinimg' src="https://localite.services/w_logo.png" alt="" />
+        <hr />
       </div>
-      <p className='lheading'>Login Page</p>
+      <h2 id='lheading'>Login</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
           <input
@@ -82,12 +83,9 @@ export const Login = () => {
           />
         </div>
         <div style={{display:'flex', justifyContent:'space-between'}}>
-
-        {error && <p className="error-message">{error}</p>}
-        <p style={{color: 'red'}}>Forgot password?</p>
         </div>
-        <br />
-        <button type="submit">Login</button>
+        
+        <button id='loginbtn' type="submit">Login</button>
       </form>
     </div>
   );
