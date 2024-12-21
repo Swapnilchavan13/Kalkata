@@ -205,7 +205,28 @@ app.get('/api/getmerchants', async (req, res) => {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
   });
+
+
+  // GET route to fetch merchants by mobile number
+app.get('/api/getmerchants/:mobileNumber', async (req, res) => {
+    try {
+      const { mobileNumber } = req.params;
   
+      // Fetch merchants with the given mobile number
+      const merchants = await Merchant.find({ mobileNumber });
+  
+      // If no merchants are found for the given mobile number
+      if (!merchants.length) {
+        return res.status(404).json({ message: `No merchants found for mobile number: ${mobileNumber}` });
+      }
+  
+      // Send success response with the merchants data
+      res.status(200).json({ merchants });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  });
 
 
 // Start the Server

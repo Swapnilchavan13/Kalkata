@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const Merchantcontent = () => {
-  const [businesses] = useState([
-    'Haute Dog Pet Salon & Boutique Store',
-    'Paws and Relax',
-    'The Pet Spa',
-  ]);
+  // Initialize states at the top level
+  const [businesses, setBusinesses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     brand: '',
     title: '',
@@ -20,6 +18,34 @@ export const Merchantcontent = () => {
     mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
   });
 
+  // Fetch business data on component mount
+  useEffect(() => {
+    const mobileNumber = localStorage.getItem('mobileNumber');
+
+    if (mobileNumber) {
+      fetch(`http://localhost:8050/api/getmerchants/${mobileNumber}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.merchants) {
+            const businessNames = data.merchants.map(merchant => merchant.businessName);
+            setBusinesses(businessNames);
+          } else {
+            console.error('No merchants found');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      console.error('Mobile number not found in localStorage');
+      setLoading(false);
+    }
+  }, []);
+
+  // Handle form data changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -28,6 +54,7 @@ export const Merchantcontent = () => {
     }));
   };
 
+  // Handle image file changes
   const handleImageChange = (e) => {
     const { name, files } = e.target;
     setFormData((prevData) => ({
@@ -36,6 +63,7 @@ export const Merchantcontent = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form Data Submitted:', formData);
@@ -51,9 +79,13 @@ export const Merchantcontent = () => {
       discountedPercentage: '',
       image1: null,
       image2: null,
-      mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
+      mobileNumber: localStorage.getItem('mobileNumber') || '',
     });
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading message while fetching data
+  }
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
@@ -62,19 +94,23 @@ export const Merchantcontent = () => {
         <div className="form-group">
           <label htmlFor="brand">Select Brand</label>
           <select
-            id="brand"
-            name="brand"
-            value={formData.brand}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select a Business</option>
-            {businesses.map((business, index) => (
+          id="brand"
+          name="brand"
+          value={formData.brand}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select a Business</option>
+          {businesses.length > 0 ? (
+            businesses.map((business, index) => (
               <option key={index} value={business}>
                 {business}
               </option>
-            ))}
-          </select>
+            ))
+          ) : (
+            <option value="">No businesses available</option>
+          )}
+        </select>
         </div>
 
         <div className="form-group">
