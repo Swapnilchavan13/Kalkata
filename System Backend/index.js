@@ -127,73 +127,85 @@ app.get('/api/getmerchantsdata/:mobileNumber', async (req, res) => {
 
 
 
-// Route to handle POST request and file upload for merchant images
-app.post('/api/addmerchantdata', upload.fields([
+
+// POST route for merchant onboarding
+app.post('/api/addmerchant', upload.fields([
     { name: 'profileImage', maxCount: 1 },
     { name: 'panTanImage', maxCount: 1 },
-    { name: 'gstinImage', maxCount: 1 },
+    { name: 'gstinImage', maxCount: 1 }
   ]), async (req, res) => {
     try {
-      const { personName, lastName, password, businessName, businessType, businessAddress, websiteUrl, operationHours, yearsOfBusiness, numberOfEmployees, productDescription, preferredCategories, offerFrequency, specificRequirements, panTanNumber, gstin, bankAccountDetails, contactEmail, contactPhoneNumber, contactPhoneNumber2, membershipPlan, mobileNumber } = req.body;
+      const { body, files } = req;
   
-      // Get the uploaded image URLs
-      const profileImage = req.files['profileImage'] ? `/uploads/${req.files['profileImage'][0].filename}` : null;
-      const panTanImage = req.files['panTanImage'] ? `/uploads/${req.files['panTanImage'][0].filename}` : null;
-      const gstinImage = req.files['gstinImage'] ? `/uploads/${req.files['gstinImage'][0].filename}` : null;
-    
-      // Create a new merchant data entry
-      const newMerchant = {
-        personName,
-        lastName,
-        password,
-        businessName,
-        businessType,
-        businessAddress,
-        websiteUrl,
-        operationHours,
-        yearsOfBusiness,
-        numberOfEmployees,
-        productDescription,
-        preferredCategories,
-        offerFrequency,
-        specificRequirements,
-        panTanNumber,
-        gstin,
-        bankAccountDetails,
-        contactEmail,
-        contactPhoneNumber,
-        contactPhoneNumber2,
-        membershipPlan,
-        mobileNumber,
-        profileImage,
-        panTanImage,
-        gstinImage,
+      // Check if the required fields are present
+      if (!body.personName || !body.lastName || !body.password || !body.businessName || !body.businessType || !body.businessAddress || !body.contactEmail || !body.contactPhoneNumber || !body.mobileNumber) {
+        return res.status(400).json({ message: 'Missing required fields' });
+      }
+  
+      // Create the merchant data object
+      const merchantData = {
+        personName: body.personName,
+        lastName: body.lastName,
+        password: body.password,
+        profileImage: files.profileImage ? `/uploads/${files.profileImage[0].filename}` : null,
+        businessName: body.businessName,
+        businessType: body.businessType,
+        businessAddress: body.businessAddress,
+        websiteUrl: body.websiteUrl,
+        operationHours: body.operationHours,
+        yearsOfBusiness: body.yearsOfBusiness,
+        numberOfEmployees: body.numberOfEmployees,
+        productDescription: body.productDescription,
+        preferredCategories: body.preferredCategories,
+        offerFrequency: body.offerFrequency,
+        specificRequirements: body.specificRequirements,
+        panTanNumber: body.panTanNumber,
+        panTanImage: files.panTanImage ? `/uploads/${files.panTanImage[0].filename}` : null,
+        gstin: body.gstin,
+        gstinImage: files.gstinImage ? `/uploads/${files.gstinImage[0].filename}` : null,
+        bankAccountDetails: body.bankAccountDetails,
+        contactEmail: body.contactEmail,
+        contactPhoneNumber: body.contactPhoneNumber,
+        contactPhoneNumber2: body.contactPhoneNumber2,
+        membershipPlan: body.membershipPlan,
+        mobileNumber: body.mobileNumber
       };
   
-      // Save to database (this can be adjusted based on your database setup)
-      // Example: await MerchantData.create(newMerchant);
+      // Create a new merchant document
+      const newMerchant = new Merchant(merchantData);
   
-      // Respond with the saved merchant data
-      res.status(201).json(newMerchant);
+      // Save the merchant to the database
+      await newMerchant.save();
+  
+      // Send success response
+      res.status(201).json({ message: 'Merchant onboarded successfully', merchant: newMerchant });
+  
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Error saving merchant data', error });
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
   });
 
+
+  // GET route to fetch all merchants
+app.get('/api/getmerchants', async (req, res) => {
+    try {
+      // Fetch all merchants from the database
+      const merchants = await Merchant.find();
   
-
-// GET route for fetching all merchants
-app.get('/api/merchants', async (req, res) => {
-  try {
-    const merchants = await Merchant.find(); // Fetch all merchants from the database
-    res.status(200).json(merchants); // Return all merchants as a JSON response
-  } catch (error) {
-    console.error('Error fetching merchants:', error);
-    res.status(500).json({ message: 'Failed to fetch merchants' });
-  }
-});
-
+      // If no merchants are found, return an empty array
+      if (!merchants.length) {
+        return res.status(404).json({ message: 'No merchants found' });
+      }
+  
+      // Send success response with all merchants data
+      res.status(200).json({ merchants });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  });
+  
 
 
 // Start the Server

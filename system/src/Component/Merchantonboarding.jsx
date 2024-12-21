@@ -62,72 +62,72 @@ export const Merchantonboarding = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Create a new FormData object
-    const dataToSend = new FormData();
-  
-    // Append form data to FormData object
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value) {
-        dataToSend.append(key, value);
-      }
-    });
-  
-    // Append signature data if available
-    if (signatureData) {
-      dataToSend.append('signature', signatureData);
+
+    // Check if signature is provided
+    if (!signatureData) {
+      alert("Please provide a signature before submitting.");
+      return;
     }
-  
+
+    // Prepare form data for submission
+    const formToSubmit = new FormData();
+    for (const key in formData) {
+      if (formData[key]) {
+        if (key === "profileImage" || key === "panTanImage" || key === "gstinImage") {
+          formToSubmit.append(key, formData[key]);
+        } else {
+          formToSubmit.append(key, formData[key]);
+        }
+      }
+    }
+
+    // Append signature data as a base64 image string
+    formToSubmit.append("signature", signatureData);
+
     try {
-      // Send the form data to the backend (replace with your actual API endpoint)
-      const response = await fetch('http://localhost:8050/api/addmerchantdata', {
+      // Send form data to the backend API (use the correct endpoint)
+      const response = await fetch('http://localhost:8050/api/addmerchant', {
         method: 'POST',
-        body: dataToSend,
+        body: formToSubmit,
       });
-  
-      // Handle the response (success or error)
+
       if (response.ok) {
-        console.log('Form submitted successfully');
         setShowSuccessPopup(true);
+        setFormData({
+          personName: '',
+          lastName: '',
+          password: '',
+          profileImage: null,
+          businessName: '',
+          businessType: '',
+          businessAddress: '',
+          websiteUrl: '',
+          operationHours: '',
+          yearsOfBusiness: '',
+          numberOfEmployees: '',
+          productDescription: '',
+          preferredCategories: '',
+          offerFrequency: '',
+          specificRequirements: '',
+          panTanNumber: '',
+          gstin: '',
+          bankAccountDetails: '',
+          contactEmail: '',
+          contactPhoneNumber: '',
+          contactPhoneNumber2: '',
+          membershipPlan: '',
+          panTanImage: null,
+          gstinImage: null,
+          mobileNumber: localStorage.getItem('mobileNumber') || '',
+        });
+        setSignatureData("");
       } else {
-        console.error('Error submitting form');
-        // Optionally handle the error (e.g., show an error message)
+        alert("There was an error submitting the form.");
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      // Optionally handle the error (e.g., show an error message)
+      console.error("Error submitting form:", error);
+      alert("There was an error submitting the form.");
     }
-  
-    // Clear form fields after submission
-    setFormData({
-      personName: '',
-      lastName: '',
-      password: '',
-      profileImage: null,
-      businessName: '',
-      businessType: '',
-      businessAddress: '',
-      websiteUrl: '',
-      operationHours: '',
-      yearsOfBusiness: '',
-      numberOfEmployees: '',
-      productDescription: '',
-      preferredCategories: '',
-      offerFrequency: '',
-      specificRequirements: '',
-      panTanNumber: '',
-      gstin: '',
-      bankAccountDetails: '',
-      contactEmail: '',
-      contactPhoneNumber: '',
-      contactPhoneNumber2: '',
-      membershipPlan: '',
-      panTanImage: null,
-      gstinImage: null,
-      mobileNumber: localStorage.getItem('mobileNumber') || '',
-    });
-  
-    setSignatureData(""); // Reset signature
   };
   
 
