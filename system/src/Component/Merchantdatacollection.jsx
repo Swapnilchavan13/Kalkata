@@ -103,7 +103,7 @@ export const Merchantdatacollection = () => {
     e.preventDefault();
     setIsSubmitting(true); // Disable the submit button
     setShowLoadingPopup(true); // Show loading popup
-  
+
     try {
       const dataToSend = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
@@ -111,64 +111,39 @@ export const Merchantdatacollection = () => {
           dataToSend.append(key, value);
         }
       });
-  
-      const response = await fetch('http://62.72.59.146:8050/api/addmerchantdata', {
+
+      const response = await fetch('http://62.72.59.146:8050/addmerchantdata', {
         method: 'POST',
         body: dataToSend,
       });
-  
-      // Check if the response is successful
+
       if (response.ok) {
-        // Try parsing the response as JSON
-        try {
-          const result = await response.json();
-          console.log('Merchant data submitted:', result);
-          alert('Data submitted successfully!');
-          
-          // Optionally reset form
-          setFormData({
-            city: '',
-            area: '',
-            category: '',
-            subCategory: '',
-            nameOfBusiness: '',
-            contactNo: '',
-            address: '',
-            website: '',
-            instagram: '',
-            facebook: '',
-            youtube: '',
-            comment: '',
-            shopFrontImage: null,
-            streetImage: null,
-            mobileNumber: localStorage.getItem('mobileNumber') || '',
-          });
-          setSubCategories([]);
-        } catch (jsonError) {
-          // If JSON parsing fails, log the error and alert the user
-          console.error('Error parsing JSON response:', jsonError);
-          alert('Received an unexpected response from the server.');
-        }
+        const result = await response.json();
+        console.log('Merchant data submitted:', result);
+        alert('Data submitted successfully!');
+        // Optionally reset form
+        setFormData({
+          city: '',
+          area: '',
+          category: '',
+          subCategory: '',
+          nameOfBusiness: '',
+          contactNo: '',
+          address: '',
+          website: '',
+          instagram: '',
+          facebook: '',
+          youtube: '',
+          comment: '',
+          shopFrontImage: null,
+          streetImage: null,
+          mobileNumber: localStorage.getItem('mobileNumber') || '',
+        });
+        setSubCategories([]);
       } else {
-        // Check if the response is HTML
-        const contentType = response.headers.get('Content-Type');
-        const errorText = await response.text();
-        
-        if (contentType && contentType.includes('text/html')) {
-          // If the response is HTML, it is likely an error page
-          console.error('Received HTML error response:', errorText);
-          alert('The server returned an error page. Please try again later.');
-        } else {
-          // Attempt to parse the error response as JSON
-          try {
-            const error = JSON.parse(errorText);
-            console.error('Submission error:', error);
-            alert(`Failed to submit data: ${error.message || 'Unknown error'}`);
-          } catch (parseError) {
-            console.error('Error parsing error response:', parseError);
-            alert('Failed to submit data: Server returned an unexpected error.');
-          }
-        }
+        const error = await response.json();
+        console.error('Submission error:', error);
+        alert('Failed to submit data.');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -178,7 +153,6 @@ export const Merchantdatacollection = () => {
       setShowLoadingPopup(false); // Hide loading popup
     }
   };
-  
 
   return (
     <div>

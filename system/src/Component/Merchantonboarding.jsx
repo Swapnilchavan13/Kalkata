@@ -93,7 +93,7 @@ export const Merchantonboarding = () => {
 
     try {
       // Send form data to the backend API (use the correct endpoint)
-      const response = await fetch('http://62.72.59.146:8050/api/addmerchant', {
+      const response = await fetch('http://62.72.59.146:8050/addmerchant', {
         method: 'POST',
         body: formToSubmit,
       });
