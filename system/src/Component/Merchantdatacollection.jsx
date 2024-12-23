@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Compressor from 'compressorjs'; // Make sure to install this library
 
 
 export const Merchantdatacollection = () => {
@@ -74,34 +73,14 @@ export const Merchantdatacollection = () => {
     const { name, files } = e.target;
   
     if (files && files[0]) {
-      const compressImage = (file, quality) => {
-        new Compressor(file, {
-          quality, // Compression quality
-          success: (compressedFile) => {
-            if (compressedFile.size > 500 * 1024 && quality > 0.1) {
-              // If the file is still > 500KB, recursively compress with lower quality
-              compressImage(compressedFile, quality - 0.1);
-            } else if (compressedFile.size <= 500 * 1024) {
-              // Set compressed file to state if size is within limit
-              setFormData((prevData) => ({
-                ...prevData,
-                [name]: compressedFile,
-              }));
-            } else {
-              alert('Unable to compress the image to 500KB. Please upload a smaller file.');
-            }
-          },
-          error: (err) => {
-            console.error('Image compression error:', err);
-            alert('An error occurred during image compression. Please try again.');
-          },
-        });
-      };
-  
-      // Start compression with initial quality
-      compressImage(files[0], 0.8); // Start with a quality of 0.8
+      // Directly set the file to state without compression
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: files[0],
+      }));
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
