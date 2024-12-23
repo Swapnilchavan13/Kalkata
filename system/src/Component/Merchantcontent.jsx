@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 export const Merchantcontent = () => {
-  // Initialize states at the top level
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false); // State to track submission status
   const [formData, setFormData] = useState({
     brand: '',
     title: '',
@@ -15,10 +15,9 @@ export const Merchantcontent = () => {
     discountedPercentage: '',
     image1: null,
     image2: null,
-    mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
+    mobileNumber: localStorage.getItem('mobileNumber') || '',
   });
 
-  // Fetch business data on component mount
   useEffect(() => {
     const mobileNumber = localStorage.getItem('mobileNumber');
 
@@ -27,7 +26,7 @@ export const Merchantcontent = () => {
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
-            const businessNames = data.merchants.map(merchant => merchant.businessName);
+            const businessNames = data.merchants.map((merchant) => merchant.businessName);
             setBusinesses(businessNames);
           } else {
             console.error('No merchants found');
@@ -45,7 +44,6 @@ export const Merchantcontent = () => {
     }
   }, []);
 
-  // Handle form data changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -54,7 +52,6 @@ export const Merchantcontent = () => {
     }));
   };
 
-  // Handle image file changes
   const handleImageChange = (e) => {
     const { name, files } = e.target;
     setFormData((prevData) => ({
@@ -63,28 +60,52 @@ export const Merchantcontent = () => {
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
-    alert('Offer details submitted successfully!');
-    setFormData({
-      brand: '',
-      title: '',
-      headline: '',
-      description: '',
-      excerptDescription: '',
-      units: '',
-      price: '',
-      discountedPercentage: '',
-      image1: null,
-      image2: null,
-      mobileNumber: localStorage.getItem('mobileNumber') || '',
+    setSubmitting(true); // Disable the button
+
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (key === 'image1' || key === 'image2') {
+        data.append(key, formData[key]);
+      } else {
+        data.append(key, formData[key]);
+      }
     });
+
+    try {
+      const response = await fetch('http://localhost:8050/api/addOfferData', {
+        method: 'POST',
+        body: data,
+      });
+
+      if (response.ok) {
+        alert('Offer details submitted successfully!');
+        setFormData({
+          brand: '',
+          title: '',
+          headline: '',
+          description: '',
+          excerptDescription: '',
+          units: '',
+          price: '',
+          discountedPercentage: '',
+          image1: null,
+          image2: null,
+          mobileNumber: localStorage.getItem('mobileNumber') || '',
+        });
+      } else {
+        console.error('Failed to submit form');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setSubmitting(false); // Re-enable the button
+    }
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading message while fetching data
+    return <div>Loading...</div>;
   }
 
   return (
@@ -240,8 +261,12 @@ export const Merchantcontent = () => {
           )}
         </div>
 
-        <button type="submit" style={{ marginTop: '10px' }}>
-          Submit
+        <button
+          type="submit"
+          style={{ marginTop: '10px' }}
+          disabled={submitting} // Disable button when submitting
+        >
+          {submitting ? 'Submitting...' : 'Submit'}
         </button>
       </form>
     </div>

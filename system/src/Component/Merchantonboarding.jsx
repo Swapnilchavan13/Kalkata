@@ -2,6 +2,9 @@ import React, { useRef, useState } from 'react';
 import SignatureCanvas from "react-signature-canvas";
 
 export const Merchantonboarding = () => {
+
+  const categories = ['Automotive & Transport', 'Clothing', 'Dry Cleaning Services', 'Education and Learning', 'Entertainment & Leisure', 'Food & Beverages', 'Hair Care', 'Healthcare & Wellness', 'Home & Maintenance', 'Jewellery', 'Pet & Petcare', 'Personal Care', 'Professional Services', 'Salon & Spa', 'Skin Care', 'Other'];
+
   const [formData, setFormData] = useState({
     personName: '',
     lastName: '',
@@ -33,6 +36,7 @@ export const Merchantonboarding = () => {
   const signatureRef = useRef(null);
   const [signatureData, setSignatureData] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [loading, setLoading] = useState(false); // New state for loadin
 
   const clearSignature = () => {
     signatureRef.current.clear();
@@ -84,6 +88,9 @@ export const Merchantonboarding = () => {
     // Append signature data as a base64 image string
     formToSubmit.append("signature", signatureData);
 
+    setLoading(true); // Set loading to true when submitting
+
+
     try {
       // Send form data to the backend API (use the correct endpoint)
       const response = await fetch('http://localhost:8050/api/addmerchant', {
@@ -127,6 +134,8 @@ export const Merchantonboarding = () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("There was an error submitting the form.");
+    } finally {
+      setLoading(false); // Set loading to false after submission
     }
   };
   
@@ -204,17 +213,16 @@ export const Merchantonboarding = () => {
           </label>
           <label>
             Business Type:
-            <select
-              name="businessType"
-              value={formData.businessType}
-              onChange={handleChange}
-              required
-            >
-              <option value="Other">Other</option>
-              <option value="Retail">Retail</option>
-              <option value="Wholesale">Wholesale</option>
-              {/* Add more options as needed */}
-            </select>
+            <select 
+          name="businessType" 
+          value={formData.businessType} 
+          onChange={handleChange} 
+        >
+          <option value="">Select Business Type</option>
+          {categories.map((category, index) => (
+            <option key={index} value={category}>{category}</option>
+          ))}
+        </select>
           </label>
           <label>
             Business Address:
@@ -271,18 +279,59 @@ export const Merchantonboarding = () => {
             />
           </label>
           <label>
-            Preferred Categories:
-            <select
-              name="preferredCategories"
-              value={formData.preferredCategories}
-              onChange={handleChange}
-              
-            >
-              <option value="Category1">Category 1</option>
-              <option value="Category2">Category 2</option>
-              {/* Add more options as needed */}
-            </select>
-          </label>
+  Preferred Categories:
+  <select
+    name="preferredCategories"
+    value={formData.preferredCategories}
+    onChange={handleChange}
+    style={{
+      padding: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+      fontSize: "16px",
+      width: "100%",
+    }}
+  >
+    <option value="">Select a Category</option>
+
+    {/* Automotive & Transport */}
+    <option value="Automotive & Transport">Automotive & Transport</option>
+
+    {/* Clothing and Personal Care */}
+    <option value="Clothing">Clothing</option>
+    <option value="Jewellery">Jewellery</option>
+    <option value="Personal Care">Personal Care</option>
+    <option value="Salon & Spa">Salon & Spa</option>
+    <option value="Skin Care">Skin Care</option>
+
+    {/* Food & Beverages */}
+    <option value="Food & Beverages">Food & Beverages</option>
+
+    {/* Home & Maintenance */}
+    <option value="Home & Maintenance">Home & Maintenance</option>
+
+    {/* Education and Professional Services */}
+    <option value="Education and Learning">Education and Learning</option>
+    <option value="Professional Services">Professional Services</option>
+
+    {/* Healthcare & Wellness */}
+    <option value="Healthcare & Wellness">Healthcare & Wellness</option>
+    <option value="Hair Care">Hair Care</option>
+
+    {/* Entertainment & Leisure */}
+    <option value="Entertainment & Leisure">Entertainment & Leisure</option>
+
+    {/* Dry Cleaning Services */}
+    <option value="Dry Cleaning Services">Dry Cleaning Services</option>
+
+    {/* Pet Care */}
+    <option value="Pet & Petcare">Pet & Petcare</option>
+
+    {/* Other */}
+    <option value="Other">Other</option>
+  </select>
+</label>
+
           <label>
             Offer Frequency:
             <input
@@ -393,12 +442,17 @@ export const Merchantonboarding = () => {
         <div>
           <label>
             Membership Plan:
-            <input
-              type="text"
-              name="membershipPlan"
-              value={formData.membershipPlan}
-              onChange={handleChange}
-            />
+            <select 
+    name="membershipPlan" 
+    value={formData.membershipPlan} 
+    onChange={handleChange} 
+  >
+    <option value="">Select Membership Plan</option>
+    <option value="1Month">1 Month</option>
+    <option value="3Months">3 Months</option>
+    <option value="6Months">6 Months</option>
+    <option value="12Months">12 Months</option>
+  </select>
           </label>
         </div>
 
@@ -443,8 +497,9 @@ export const Merchantonboarding = () => {
 
         {/* Submit Button */}
         <div>
-          <button type="submit">Submit</button>
-        </div>
+        <button type="submit" disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit'}
+          </button>        </div>
       </form>
 
       {/* Success Popup */}
