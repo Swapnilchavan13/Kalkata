@@ -51,7 +51,7 @@ const storage = multer.diskStorage({
 
 
   // Route to handle POST request and file upload
-app.post('/api/addmerchantdata', upload.fields([
+app.post('/addmerchantdata', upload.fields([
     { name: 'shopFrontImage', maxCount: 1 },
     { name: 'streetImage', maxCount: 1 },
   ]), async (req, res) => {
@@ -93,7 +93,7 @@ app.post('/api/addmerchantdata', upload.fields([
   });
 
   // Route to fetch all merchant data
-app.get('/api/getmerchantsdata', async (req, res) => {
+app.get('/getmerchantsdata', async (req, res) => {
     try {
       // Fetch all merchant data from the database
       const merchants = await MerchantData.find();
@@ -108,7 +108,7 @@ app.get('/api/getmerchantsdata', async (req, res) => {
 
 
   // Route to fetch merchant data by mobile number
-app.get('/api/getmerchantsdata/:mobileNumber', async (req, res) => {
+app.get('/getmerchantsdata/:mobileNumber', async (req, res) => {
     try {
         const { mobileNumber } = req.params;
 
@@ -131,7 +131,7 @@ app.get('/api/getmerchantsdata/:mobileNumber', async (req, res) => {
 
 
 // POST route for merchant onboarding
-app.post('/api/addmerchant', upload.fields([
+app.post('/addmerchant', upload.fields([
     { name: 'profileImage', maxCount: 1 },
     { name: 'panTanImage', maxCount: 1 },
     { name: 'gstinImage', maxCount: 1 }
@@ -190,7 +190,7 @@ app.post('/api/addmerchant', upload.fields([
 
 
   // GET route to fetch all merchants
-app.get('/api/getmerchants', async (req, res) => {
+app.get('/getmerchants', async (req, res) => {
     try {
       // Fetch all merchants from the database
       const merchants = await Merchant.find();
@@ -209,7 +209,7 @@ app.get('/api/getmerchants', async (req, res) => {
   });
 
    // GET route to fetch merchants by mobile number
-app.get('/api/getmerchants/:mobileNumber', async (req, res) => {
+app.get('/getmerchants/:mobileNumber', async (req, res) => {
     try {
       // Extract the mobile number from the request parameters
       const { mobileNumber } = req.params;
@@ -232,7 +232,7 @@ app.get('/api/getmerchants/:mobileNumber', async (req, res) => {
 
 
   // POST: Add Offer Data
-app.post('/api/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2' }]), async (req, res) => {
+app.post('/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2' }]), async (req, res) => {
     try {
       const { brand, title, headline, description, excerptDescription, units, price, discountedPercentage, mobileNumber } = req.body;
   
@@ -259,7 +259,7 @@ app.post('/api/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2
   });
   
   // GET: Fetch Offer Data
-  app.get('/api/getOfferData', async (req, res) => {
+  app.get('/getOfferData', async (req, res) => {
     try {
       const offers = await OfferData.find();
       res.status(200).json(offers);
