@@ -22,7 +22,7 @@ export const Merchantcontent = () => {
     const mobileNumber = localStorage.getItem('mobileNumber');
 
     if (mobileNumber) {
-      fetch(`http://62.72.59.146:8050/getmerchants/${mobileNumber}`)
+      fetch(`https://fieldteam.localite.services/api/getmerchants/${mobileNumber}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
@@ -74,7 +74,7 @@ export const Merchantcontent = () => {
     });
 
     try {
-      const response = await fetch('http://62.72.59.146:8050/addOfferData', {
+      const response = await fetch('https://fieldteam.localite.services/api/addOfferData', {
         method: 'POST',
         body: data,
       });

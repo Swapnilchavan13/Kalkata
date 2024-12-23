@@ -112,7 +112,7 @@ export const Merchantdatacollection = () => {
         }
       });
 
-      const response = await fetch('http://62.72.59.146:8050/addmerchantdata', {
+      const response = await fetch('https://fieldteam.localite.services/api/addmerchantdata', {
         method: 'POST',
         body: dataToSend,
       });
