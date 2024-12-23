@@ -150,15 +150,24 @@ export const Merchantdatacollection = () => {
           alert('Received an unexpected response from the server.');
         }
       } else {
-        // If response is not ok, try to parse as JSON or handle as text
+        // Check if the response is HTML
+        const contentType = response.headers.get('Content-Type');
         const errorText = await response.text();
-        try {
-          const error = JSON.parse(errorText); // Attempt to parse JSON error response
-          console.error('Submission error:', error);
-          alert(`Failed to submit data: ${error.message || 'Unknown error'}`);
-        } catch (parseError) {
-          console.error('Error parsing error response:', parseError);
-          alert('Failed to submit data: Server returned an unexpected error.');
+        
+        if (contentType && contentType.includes('text/html')) {
+          // If the response is HTML, it is likely an error page
+          console.error('Received HTML error response:', errorText);
+          alert('The server returned an error page. Please try again later.');
+        } else {
+          // Attempt to parse the error response as JSON
+          try {
+            const error = JSON.parse(errorText);
+            console.error('Submission error:', error);
+            alert(`Failed to submit data: ${error.message || 'Unknown error'}`);
+          } catch (parseError) {
+            console.error('Error parsing error response:', parseError);
+            alert('Failed to submit data: Server returned an unexpected error.');
+          }
         }
       }
     } catch (error) {
