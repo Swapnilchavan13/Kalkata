@@ -10,6 +10,8 @@ const path = require('path');
 
 const Merchant = require('./models/Merchant');
 const MerchantData = require('./models/MerchantData');
+const OfferData = require('./models/OfferData');
+
 
 
 // MongoDB Connection
@@ -199,6 +201,28 @@ app.get('/api/getmerchants', async (req, res) => {
       }
   
       // Send success response with all merchants data
+      res.status(200).json({ merchants });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  });
+
+   // GET route to fetch merchants by mobile number
+app.get('/api/getmerchants/:mobileNumber', async (req, res) => {
+    try {
+      // Extract the mobile number from the request parameters
+      const { mobileNumber } = req.params;
+  
+      // Fetch all merchants with the given mobile number from the database
+      const merchants = await Merchant.find({ mobileNumber });
+  
+      // If no merchants are found, return an error message
+      if (!merchants.length) {
+        return res.status(404).json({ message: 'No merchants found with this mobile number' });
+      }
+  
+      // Send success response with all matching merchants data
       res.status(200).json({ merchants });
     } catch (error) {
       console.error(error);
