@@ -112,7 +112,7 @@ export const Merchantdatacollection = () => {
         }
       });
 
-      const response = await fetch('http://localhost:8050/api/addmerchantdata', {
+      const response = await fetch('http://62.72.59.146:8050/api/addmerchantdata', {
         method: 'POST',
         body: dataToSend,
       });

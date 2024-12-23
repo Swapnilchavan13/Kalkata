@@ -22,7 +22,7 @@ export const Merchantcontent = () => {
     const mobileNumber = localStorage.getItem('mobileNumber');
 
     if (mobileNumber) {
-      fetch(`http://localhost:8050/api/getmerchants/${mobileNumber}`)
+      fetch(`http://62.72.59.146:8050/api/getmerchants/${mobileNumber}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
@@ -74,7 +74,7 @@ export const Merchantcontent = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:8050/api/addOfferData', {
+      const response = await fetch('http://62.72.59.146:8050/api/addOfferData', {
         method: 'POST',
         body: data,
       });
