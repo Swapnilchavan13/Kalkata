@@ -14,7 +14,7 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-       <img id='loginpinimg' src="https://localite.services/w_logo.png" alt="" />
+       <img style={{width:'400px'}} id='loginpinimg' src="https://localite.services/w_logo.png" alt="" />
        <hr />
       <div className="dashboard-header">
         

@@ -1,6 +1,4 @@
-
-  
-  /* Login Container */
+/* Login Container */
   .login-container {
     justify-content: center;
     align-items: center;
@@ -15,17 +13,14 @@
     justify-content: center;
     margin-bottom: 20px;
   }
-
+  
   #centreimgdiv input{
     height: 60px;
   }
   
-  .loginpinimg {
-    width: 100px;
-    height: auto;
-  }
   
   #lheading {
+    margin-top: 10%;
     text-align: center;
     font-size: 24px;
     font-weight: bold;

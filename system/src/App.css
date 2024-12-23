@@ -67,7 +67,7 @@ button:hover {
 
 img {
   margin-top: 10px;
-  max-width: 100px;
+  max-width: 120px;
   height: auto;
   display: block;
 }
@@ -97,9 +97,7 @@ img {
     font-size: 0.9rem;
   }
 
-  img {
-    max-width: 80px;
-  }
+
 }
 
 @media (max-width: 480px) {
@@ -127,7 +125,5 @@ img {
     margin-top: 10px;
   }
 
-  img {
-    max-width: 70px;
-  }
+
 }

@@ -27,6 +27,8 @@ const merchantSchema = new mongoose.Schema({
     contactPhoneNumber2: { type: String },
     membershipPlan: { type: String },
     mobileNumber: { type: String, required: true }
-});
+}, {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+  });
 
 module.exports = mongoose.model('Merchant', merchantSchema);
