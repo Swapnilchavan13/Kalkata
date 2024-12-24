@@ -21,7 +21,7 @@ export const Login = () => {
   useEffect(() => {
     const fetchMerchants = async () => {
       try {
-        const response = await fetch('https://backend.climescore.com/getisn-registration');
+        const response = await fetch('https://fieldteam.localite.services/api/registrations');
         const data = await response.json();
         setMerchants(data);
       } catch (error) {

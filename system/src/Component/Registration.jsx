@@ -24,7 +24,7 @@ export const Registration = () => {
     setIsSubmitting(true); // Disable the button during submission
 
     try {
-      const response = await fetch('http://localhost:8050/register', {
+      const response = await fetch('https://fieldteam.localite.services/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
