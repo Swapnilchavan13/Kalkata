@@ -96,7 +96,7 @@ export const Merchantcontent = () => {
           image2: null,
           mobileNumber: localStorage.getItem('mobileNumber') || '',
         });
-        
+
         navigate('/dashboard'); // Redirect to the dashboard
 
       } else {
@@ -114,10 +114,11 @@ export const Merchantcontent = () => {
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+    <div style={{ padding: '10px', maxWidth: '600px', margin: 'auto' }}>
       <img style={{width:'100px'}} src="https://localite.services/w_logo.png" alt="" />
       <hr />
-      <h2>Merchant Offer Details</h2>
+      <br />
+      <h3 style={{textAlign:'center'}}>Merchant Offer Details</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="brand">Select Brand</label>

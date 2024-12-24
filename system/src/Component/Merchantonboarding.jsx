@@ -150,7 +150,8 @@ export const Merchantonboarding = () => {
     <div style={{padding:'10px'}}>
       <img style={{width:'100px'}} src="https://localite.services/w_logo.png" alt="" />
       <hr />
-      <h2>Merchant Onboarding Form</h2>
+      <br />
+      <h3 style={{textAlign:'center' }}>Merchant Onboarding Form</h3>
       <form onSubmit={handleSubmit}>
         <hr />
         <h3>Personal Information</h3>
