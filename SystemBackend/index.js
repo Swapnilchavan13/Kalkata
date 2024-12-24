@@ -12,6 +12,7 @@ const Merchant = require('./models/Merchant');
 const MerchantData = require('./models/MerchantData');
 const OfferData = require('./models/OfferData');
 
+const Registration = require('./models/Registration'); // Add this import
 
 
 // MongoDB Connection
@@ -50,6 +51,42 @@ const storage = multer.diskStorage({
   const upload = multer({ storage: storage });
 
 
+
+
+  // POST Request to Register a New User
+app.post('/register', async (req, res) => {
+  const { contactPerson, mobileNumber, email, loginPin, dateCreated } = req.body;
+
+  try {
+    // Create a new registration entry
+    const newRegistration = new Registration({
+      contactPerson,
+      mobileNumber,
+      email,
+      loginPin,
+      dateCreated,
+    });
+
+    // Save the registration entry to the database
+    await newRegistration.save();
+
+    res.status(201).json({ message: 'Registration successful!', newRegistration });
+  } catch (error) {
+    console.error('Error in registration:', error);
+    res.status(500).json({ message: 'Error in registration. Please try again later.' });
+  }
+});
+
+// GET Request to Retrieve All Registrations
+app.get('/registrations', async (req, res) => {
+  try {
+    const registrations = await Registration.find(); // Retrieve all registrations from the database
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.error('Error fetching registrations:', error);
+    res.status(500).json({ message: 'Error fetching registrations.' });
+  }
+});
   // Route to handle POST request and file upload
 app.post('/addmerchantdata', upload.fields([
     { name: 'shopFrontImage', maxCount: 1 },
