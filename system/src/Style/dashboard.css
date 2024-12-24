@@ -45,13 +45,16 @@
   .logout-button {
     background-color: #ff4d4f;
     color: white;
-    width: 30%;
+    width: 20%;
     border: none;
-    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+  }
+  .button-container {
+    display: flex;
+    justify-content: right;
   }
   
   .logout-button:hover {
@@ -66,11 +69,11 @@
   }
   
   .dashboard-link {
-    background-color: teal;
+    background-color: #2A6171;
     color: white;
     padding: 12px;
     text-align: center;
-    border-radius: 30px;
+    border-radius: 5px;
     font-size: 20px;
     width: 90%;
     transition: background-color 0.3s ease;
@@ -91,8 +94,8 @@
     }
   
     .logout-button {
-      padding: 6px 12px;
-      font-size: 14px;
+      /* padding: 6px 12px; */
+      font-size: 8px;
     }
   
     .dashboard-link {
@@ -112,7 +115,7 @@
     }
   
     .logout-button {
-      padding: 10px 20px;
+      /* padding: 10px 20px; */
       font-size: 18px;
     }
   

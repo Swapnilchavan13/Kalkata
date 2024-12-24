@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export const Merchantdatacollection = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     city: '',
     area: '',
@@ -140,6 +142,7 @@ export const Merchantdatacollection = () => {
           mobileNumber: localStorage.getItem('mobileNumber') || '',
         });
         setSubCategories([]);
+        navigate('/dashboard'); // Redirect to the dashboard
       } else {
         const error = await response.json();
         console.error('Submission error:', error);
@@ -155,7 +158,9 @@ export const Merchantdatacollection = () => {
   };
 
   return (
-    <div>
+    <div  style={{ maxWidth: '600px', margin: 'auto' }}>
+      <img style={{width:'100px'}} src="https://localite.services/w_logo.png" alt="" />
+      <hr />
       <h1>Merchant Data Collection</h1>
       <form onSubmit={handleSubmit}>
       <div>

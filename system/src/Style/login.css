@@ -7,6 +7,7 @@
     background-position: center;
     background-repeat: no-repeat;
     padding: 20px;
+    background-color: rgba(250, 128, 114, 0.3); /* Adds 50% opacity to the background color */
   }
   
   #centreimgdiv {
@@ -24,14 +25,15 @@
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    color: rgb(39, 116, 116);
+    color: #2A6171;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
   }
   
   /* Form Styling */
   .login-form {
-    background-color: rgba(154, 154, 154, 0.8);
+    background-color: #75B5AF
+    (154, 154, 154, 0.8);
     /* padding: 30px; */
     border-radius: 10px;
     width: 95%;
@@ -85,9 +87,11 @@
     }
 
     #loginbtn{
-        background-color: rgb(5, 119, 119);
-        width: 50%;
-        border-radius: 20px;
+      width: 50%;
+      border-radius: 20px;
+      background-color:#6FC6AC;
+        color: black;
+        font-weight: 600;
     }
   }
   

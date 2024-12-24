@@ -60,7 +60,7 @@ export const Login = () => {
         <img id='loginpinimg' src="https://localite.services/w_logo.png" alt="" />
         <hr />
       </div>
-      <h2 id='lheading'>Login</h2>
+      <h2 id='lheading'>Field Team Login</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
           <input
@@ -68,7 +68,7 @@ export const Login = () => {
             id="mobileNumber"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder='📞 Enter Mobile Number'
+            placeholder='🪪 Enter Login ID'
             required
           />
         </div>

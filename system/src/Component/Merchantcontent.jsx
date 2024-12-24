@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const Merchantcontent = () => {
+  const navigate = useNavigate();
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false); // State to track submission status
@@ -94,6 +96,9 @@ export const Merchantcontent = () => {
           image2: null,
           mobileNumber: localStorage.getItem('mobileNumber') || '',
         });
+        
+        navigate('/dashboard'); // Redirect to the dashboard
+
       } else {
         console.error('Failed to submit form');
       }
@@ -110,6 +115,8 @@ export const Merchantcontent = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+      <img style={{width:'100px'}} src="https://localite.services/w_logo.png" alt="" />
+      <hr />
       <h2>Merchant Offer Details</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

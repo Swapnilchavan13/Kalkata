@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SignatureCanvas from "react-signature-canvas";
 
 export const Merchantonboarding = () => {
+  const navigate = useNavigate();
 
   const categories = ['Automotive & Transport', 'Clothing', 'Dry Cleaning Services', 'Education and Learning', 'Entertainment & Leisure', 'Food & Beverages', 'Hair Care', 'Healthcare & Wellness', 'Home & Maintenance', 'Jewellery', 'Pet & Petcare', 'Personal Care', 'Professional Services', 'Salon & Spa', 'Skin Care', 'Other'];
-
   const [formData, setFormData] = useState({
     personName: '',
     lastName: '',
@@ -128,6 +129,7 @@ export const Merchantonboarding = () => {
           mobileNumber: localStorage.getItem('mobileNumber') || '',
         });
         setSignatureData("");
+        navigate('/dashboard'); // Redirect to the dashboard
       } else {
         alert("There was an error submitting the form.");
       }
@@ -145,10 +147,11 @@ export const Merchantonboarding = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{padding:'10px'}}>
+      <img style={{width:'100px'}} src="https://localite.services/w_logo.png" alt="" />
+      <hr />
       <h2>Merchant Onboarding Form</h2>
       <form onSubmit={handleSubmit}>
-        {/* Personal Information */}
         <hr />
         <h3>Personal Information</h3>
         <hr />
@@ -271,7 +274,7 @@ export const Merchantonboarding = () => {
             />
           </label>
           <label>
-            Product Description:
+            Business Description:
             <textarea
               name="productDescription"
               value={formData.productDescription}
@@ -475,7 +478,7 @@ export const Merchantonboarding = () => {
           </div>
           <div style={{display:'flex', gap:'10px'}}>
 
-          <button style={{backgroundColor:'green'}} type="button" onClick={saveSignature}>
+          <button style={{backgroundColor:'green',color:'white'}} type="button" onClick={saveSignature}>
             Save Signature
           </button>
           <button style={{backgroundColor:'yellow' ,color:'black'}} type="button" onClick={clearSignature}>

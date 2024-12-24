@@ -16,9 +16,13 @@ export const Dashboard = () => {
     <div className="dashboard-container">
        <img style={{width:'400px'}} id='loginpinimg' src="https://localite.services/w_logo.png" alt="" />
        <hr />
+       <div class="button-container">
+  
+       <button className="logout-button" onClick={handleLogout}>Logout</button>
+</div>
       <div className="dashboard-header">
         
-        <h1>Welcome to the Dashboard</h1>
+        <h1>Which Merchant Data Would you Like to Enter?</h1>
       </div>
 
       <div className="dashboard-links">
@@ -32,9 +36,8 @@ export const Dashboard = () => {
           Merchant Content Creation
         </Link>
       </div>
-      <br />
-      <br />
-      <button className="logout-button" onClick={handleLogout}>Logout</button>
+      
+      
     </div>
   );
 };
