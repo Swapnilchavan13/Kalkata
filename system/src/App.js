@@ -9,6 +9,7 @@ import { Merchantcontent } from './Component/Merchantcontent';
 import { Merchantdatacollection } from './Component/Merchantdatacollection';
 import { Merchantonboarding } from './Component/Merchantonboarding';
 import { Registration } from './Component/Registration';
+import { Allmerchantdata } from './Pages/Allmerchantdata';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/allmerchant" element={<Allmerchantdata />} />
+
           <Route path="/registration9049127078" element={<Registration />} />
           <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
           <Route path="/merchantcontent" element={<ProtectedRoute element={<Merchantcontent />} />} />
