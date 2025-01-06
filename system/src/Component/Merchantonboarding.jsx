@@ -24,7 +24,7 @@ export const Merchantonboarding = () => {
     specificRequirements: '',
     panTanNumber: '',
     gstin: '',
-    bankAccountDetails: '',
+    bankAccountDetails: 'NA',
     contactEmail: '',
     contactPhoneNumber: '',
     contactPhoneNumber2: '',
@@ -119,7 +119,7 @@ export const Merchantonboarding = () => {
           specificRequirements: '',
           panTanNumber: '',
           gstin: '',
-          bankAccountDetails: '',
+          bankAccountDetails: 'NA',
           contactEmail: '',
           contactPhoneNumber: '',
           contactPhoneNumber2: '',
@@ -395,14 +395,15 @@ export const Merchantonboarding = () => {
             />
           </label>
 
-          <label>
+          {/* <label>
             Bank Account Number:
             <input
               name="bankAccountDetails"
               value={formData.bankAccountDetails}
               onChange={handleChange}
             />
-          </label>
+          </label> */}
+          
         </div>
 
         {/* Contact Information */}
