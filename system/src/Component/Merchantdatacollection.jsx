@@ -333,14 +333,14 @@ export const Merchantdatacollection = () => {
           <label>Reason:</label>
           <select
             name="reason"
-            value={formData.reason}
+            value={formData.additionalOption}
             onChange={handleChange}
             required
           >
             <option value="">Select Reason</option>
-            <option value="Price too high">Reason 1</option>
-            <option value="No need">Reason 2</option>
-            <option value="Other priorities">Reason 3</option>
+            <option value="Reason 1">Reason 1</option>
+            <option value="Reason 2">Reason 2</option>
+            <option value="Reason 3">Reason 3</option>
           </select>
         </div>
       )}
