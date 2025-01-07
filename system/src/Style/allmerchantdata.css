@@ -88,4 +88,49 @@
     margin-top: 20px;
     font-weight: bold;
   }
+
+  /* Container for checkbox group */
+.checkbox-group {
+  display: flex;
+  justify-content: flex-start; /* Align to the left */
+  gap: 1rem; /* Space between checkboxes */
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Individual checkbox item */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Checkbox label */
+.checkbox-label {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+/* Checkbox input styling */
+.checkbox-input {
+  transform: scale(1.2); /* Make the checkbox larger for better touch interaction */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .checkbox-group {
+      padding: 0.5rem;
+  }
+
+  .checkbox-label {
+      font-size: 0.9rem;
+  }
+}
+
   

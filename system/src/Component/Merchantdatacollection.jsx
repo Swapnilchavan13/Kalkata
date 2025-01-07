@@ -12,6 +12,10 @@ export const Merchantdatacollection = () => {
     nameOfBusiness: '',
     contactNo: '',
     address: '',
+    contactStatus:'',
+    additionalOption:'',
+    registrationFormFilled: false,
+    kycDone: false,
     website: '',
     instagram: '',
     facebook: '',
@@ -83,24 +87,22 @@ export const Merchantdatacollection = () => {
     }
   };
   
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
+  const { name, value, type, checked } = e.target;
+  setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
-    }));
+      [name]: type === "checkbox" ? checked : value,
+  }));
 
-    if (name === 'category') {
+  if (name === 'category') {
       setSubCategories(categories[value] || []);
       setFormData((prevData) => ({ ...prevData, subCategory: '' }));
-    }
+  }
 
-    if (name === 'city') {
+  if (name === 'city') {
       setFormData((prevData) => ({ ...prevData, area: '' }));
-    }
-  };
-
+  }
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true); // Disable the submit button
@@ -132,6 +134,10 @@ export const Merchantdatacollection = () => {
           nameOfBusiness: '',
           contactNo: '',
           address: '',
+          contactStatus:'',
+          additionalOption:'',
+          registrationFormFilled: false,
+          kycDone: false,
           website: '',
           instagram: '',
           facebook: '',
@@ -259,6 +265,86 @@ export const Merchantdatacollection = () => {
             required
           />
         </div>
+
+        <div>
+        <label>Contact Status:</label>
+        <select
+          name="contactStatus"
+          value={formData.contactStatus}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Status</option>
+          <option value="Contact again">Contact again</option>
+          <option value="Onboarded">Onboarded</option>
+          <option value="Not interested">Not interested</option>
+        </select>
+      </div>
+
+      {formData.contactStatus === "Contact again" && (
+        <div>
+          <label>Next Steps:</label>
+          <select
+            name="additionalOption"
+            value={formData.additionalOption}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Option</option>
+            <option value="Send details digitally">Send details digitally</option>
+            <option value="Physically visit again">Physically visit again</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      )}
+
+{formData.contactStatus === "Onboarded" && (
+  <div className="checkbox-group">
+    <div className="checkbox-item">
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          name="registrationFormFilled"
+          checked={formData.registrationFormFilled}
+          onChange={handleChange}
+          className="checkbox-input"
+        />
+        Registration form filled
+      </label>
+    </div>
+    <div className="checkbox-item">
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          name="kycDone"
+          checked={formData.kycDone}
+          onChange={handleChange}
+          className="checkbox-input"
+        />
+        KYC Done
+      </label>
+    </div>
+  </div>
+)}
+
+
+      {formData.contactStatus === "Not interested" && (
+        <div>
+          <label>Reason:</label>
+          <select
+            name="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Reason</option>
+            <option value="Price too high">Reason 1</option>
+            <option value="No need">Reason 2</option>
+            <option value="Other priorities">Reason 3</option>
+          </select>
+        </div>
+      )}
+
         <div>
           <label>Website:</label>
           <input
