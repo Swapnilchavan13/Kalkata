@@ -332,7 +332,7 @@ export const Merchantdatacollection = () => {
         <div>
           <label>Reason:</label>
           <select
-            name="reason"
+            name="additionalOption"
             value={formData.additionalOption}
             onChange={handleChange}
             required
