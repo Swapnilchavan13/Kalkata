@@ -53,6 +53,22 @@ const merchantDataSchema = new mongoose.Schema({
   mobileNumber: {
     type: String,
   },
+  contactStatus: {
+    type: String,
+    default: '', // Default empty string
+  },
+  additionalOption: {
+    type: String,
+    default: '', // Default empty string
+  },
+  registrationFormFilled: {
+    type: Boolean,
+    default: false, // Default false
+  },
+  kycDone: {
+    type: Boolean,
+    default: false, // Default false
+  },
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });

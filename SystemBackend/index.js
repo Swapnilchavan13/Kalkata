@@ -93,8 +93,26 @@ app.post('/addmerchantdata', upload.fields([
     { name: 'streetImage', maxCount: 1 },
   ]), async (req, res) => {
     try {
-      const { city, area, category, subCategory, nameOfBusiness, contactNo, address, website, instagram, facebook, youtube, comment, mobileNumber } = req.body;
-  
+      const { 
+        city, 
+        area, 
+        category, 
+        subCategory, 
+        nameOfBusiness, 
+        contactNo, 
+        address, 
+        website, 
+        instagram, 
+        facebook, 
+        youtube, 
+        comment,  
+        mobileNumber, 
+        contactStatus, 
+        additionalOption, 
+        registrationFormFilled, 
+        kycDone 
+      } = req.body;
+        
       // Get the uploaded image URLs
       const shopFrontImage = req.files['shopFrontImage'] ? `/uploads/${req.files['shopFrontImage'][0].filename}` : null;
       const streetImage = req.files['streetImage'] ? `/uploads/${req.files['streetImage'][0].filename}` : null;
@@ -116,6 +134,10 @@ app.post('/addmerchantdata', upload.fields([
         mobileNumber,
         shopFrontImage,
         streetImage,
+        contactStatus, 
+        additionalOption, 
+        registrationFormFilled, 
+        kycDone 
       });
   
       // Save to database
