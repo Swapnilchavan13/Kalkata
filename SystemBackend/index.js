@@ -110,7 +110,8 @@ app.post('/addmerchantdata', upload.fields([
         contactStatus, 
         additionalOption, 
         registrationFormFilled, 
-        kycDone 
+        kycDone,
+        visitDateTime
       } = req.body;
         
       // Get the uploaded image URLs
@@ -137,7 +138,8 @@ app.post('/addmerchantdata', upload.fields([
         contactStatus, 
         additionalOption, 
         registrationFormFilled, 
-        kycDone 
+        kycDone,
+        visitDateTime
       });
   
       // Save to database
@@ -185,8 +187,6 @@ app.get('/getmerchantsdata/:mobileNumber', async (req, res) => {
         res.status(500).json({ message: 'Error fetching merchant data by mobile number', error });
     }
 });
-
-
 
 
 // POST route for merchant onboarding

@@ -69,6 +69,10 @@ const merchantDataSchema = new mongoose.Schema({
     type: Boolean,
     default: false, // Default false
   },
+  visitDateTime: {
+    type: Date, // Use `Date` to store both date and time
+    default: null, // Default to null if not provided
+},
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
