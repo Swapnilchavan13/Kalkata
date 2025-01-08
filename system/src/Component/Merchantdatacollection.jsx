@@ -12,6 +12,7 @@ export const Merchantdatacollection = () => {
     nameOfBusiness: '',
     contactNo: '',
     address: '',
+    visitDateTime: "",
     contactStatus:'',
     additionalOption:'',
     registrationFormFilled: false,
@@ -134,6 +135,7 @@ export const Merchantdatacollection = () => {
           nameOfBusiness: '',
           contactNo: '',
           address: '',
+          visitDateTime: "",
           contactStatus:'',
           additionalOption:'',
           registrationFormFilled: false,
@@ -282,21 +284,37 @@ export const Merchantdatacollection = () => {
       </div>
 
       {formData.contactStatus === "Contact again" && (
-        <div>
-          <label>Next Steps:</label>
-          <select
-            name="additionalOption"
-            value={formData.additionalOption}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Option</option>
-            <option value="Send details digitally">Send details digitally</option>
-            <option value="Physically visit again">Physically visit again</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-      )}
+  <div className="contact-again-container">
+    <label className="form-label">Next Steps:</label>
+    <select
+      name="additionalOption"
+      value={formData.additionalOption}
+      onChange={handleChange}
+      required
+      className="form-select"
+    >
+      <option value="">Select Option</option>
+      <option value="Send details digitally">Send details digitally</option>
+      <option value="Physically visit again">Physically visit again</option>
+      <option value="Other">Other</option>
+    </select>
+
+    {formData.additionalOption === "Physically visit again" && (
+      <div className="date-time-container">
+        <label className="form-label">Date and Time of Visit:</label>
+        <input
+          type="datetime-local"
+          name="visitDateTime"
+          value={formData.visitDateTime}
+          onChange={handleChange}
+          required
+          className="form-input"
+        />
+      </div>
+    )}
+  </div>
+)}
+
 
 {formData.contactStatus === "Onboarded" && (
   <div className="checkbox-group">
