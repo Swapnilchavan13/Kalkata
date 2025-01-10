@@ -290,6 +290,29 @@ app.get('/getmerchants/:mobileNumber', async (req, res) => {
   });
 
 
+     // GET route to fetch merchants by mobile number
+app.get('/getmerchantsself/:contactPhoneNumber', async (req, res) => {
+  try {
+    // Extract the mobile number from the request parameters
+    const { contactPhoneNumber } = req.params;
+
+    // Fetch all merchants with the given mobile number from the database
+    const merchants = await Merchant.find({ contactPhoneNumber });
+
+    // If no merchants are found, return an error message
+    if (!merchants.length) {
+      return res.status(404).json({ message: 'No merchants found with this mobile number' });
+    }
+
+    // Send success response with all matching merchants data
+    res.status(200).json({ merchants });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+
   // POST: Add Offer Data
 app.post('/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2' }]), async (req, res) => {
     try {
