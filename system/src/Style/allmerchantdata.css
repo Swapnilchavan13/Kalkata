@@ -122,6 +122,12 @@
   transform: scale(1.2); /* Make the checkbox larger for better touch interaction */
 }
 
+.logoutbtn{
+  width: 100px;
+  color: white;
+  background-color: #ec362d;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .checkbox-group {

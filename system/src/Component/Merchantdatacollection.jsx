@@ -412,6 +412,7 @@ export const Merchantdatacollection = () => {
           <input
             type="file"
             name="shopFrontImage"
+            required
             onChange={handleFileChange}
             accept="image/*"
           />
@@ -428,6 +429,7 @@ export const Merchantdatacollection = () => {
           <input
             type="file"
             name="streetImage"
+            required
             onChange={handleFileChange}
             accept="image/*"
           />

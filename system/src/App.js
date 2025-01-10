@@ -10,6 +10,7 @@ import { Merchantdatacollection } from './Component/Merchantdatacollection';
 import { Merchantonboarding } from './Component/Merchantonboarding';
 import { Registration } from './Component/Registration';
 import { Allmerchantdata } from './Pages/Allmerchantdata';
+import { Contentbymerchant } from './Component/Contentbymerchant';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/addcontent" element={<Contentbymerchant />} />
+
           <Route path="/allmerchant" element={<Allmerchantdata />} />
 
           <Route path="/registration9049127078" element={<Registration />} />
