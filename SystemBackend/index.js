@@ -111,7 +111,8 @@ app.post('/addmerchantdata', upload.fields([
         additionalOption, 
         registrationFormFilled, 
         kycDone,
-        visitDateTime
+        visitDateTime,
+        decisionMakerAvailable
       } = req.body;
         
       // Get the uploaded image URLs
@@ -139,7 +140,8 @@ app.post('/addmerchantdata', upload.fields([
         additionalOption, 
         registrationFormFilled, 
         kycDone,
-        visitDateTime
+        visitDateTime,
+        decisionMakerAvailable
       });
   
       // Save to database

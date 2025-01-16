@@ -22,6 +22,9 @@ const merchantDataSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  decisionMakerAvailable: {
+    type: String,
+  },
   website: {
     type: String,
     default: '',
