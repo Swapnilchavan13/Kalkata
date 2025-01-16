@@ -25,6 +25,7 @@ export const Merchantdatacollection = () => {
     shopFrontImage: null,
     streetImage: null,
     mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
+    decisionMakerAvailable: 'Yes', // Default to "Yes"
   });
 
   const [subCategories, setSubCategories] = useState([]);
@@ -148,6 +149,7 @@ export const Merchantdatacollection = () => {
           shopFrontImage: null,
           streetImage: null,
           mobileNumber: localStorage.getItem('mobileNumber') || '',
+          decisionMakerAvailable: 'Yes',
         });
         setSubCategories([]);
         navigate('/dashboard'); // Redirect to the dashboard
@@ -257,6 +259,34 @@ export const Merchantdatacollection = () => {
             required
           />
         </div>
+
+        <div>
+          <label>Decision Maker Available:</label>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <label style={{ display: 'flex', alignItems: 'center' }}>
+              <input
+                type="radio"
+                name="decisionMakerAvailable"
+                value="Yes"
+                checked={formData.decisionMakerAvailable === 'Yes'}
+                onChange={handleChange}
+              />
+              Yes
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center' }}>
+              <input
+                type="radio"
+                name="decisionMakerAvailable"
+                value="No"
+                checked={formData.decisionMakerAvailable === 'No'}
+                onChange={handleChange}
+              />
+              No
+            </label>
+          </div>
+        </div>
+
+
         <div>
           <label>Address:</label>
           <input
