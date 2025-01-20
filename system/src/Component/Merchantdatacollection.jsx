@@ -386,9 +386,16 @@ export const Merchantdatacollection = () => {
             required
           >
             <option value="">Select Reason</option>
-            <option value="Reason 1">Reason 1</option>
-            <option value="Reason 2">Reason 2</option>
-            <option value="Reason 3">Reason 3</option>
+<option value="They are dependent on your own marketing & social media team.">
+    They are dependent on your own marketing & social media team.
+</option>
+<option value="They aren't dependent on your locality-based businesses.">
+    They aren't dependent on your locality-based businesses.
+</option>
+<option value="Not interested in online-based businesses.">
+    Not interested in online-based businesses.
+</option>
+
           </select>
         </div>
       )}
