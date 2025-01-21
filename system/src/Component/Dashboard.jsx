@@ -71,6 +71,7 @@ export const Dashboard = () => {
         <h1>Which Merchant Data Would you Like to Enter?</h1>
       </div>
       <div className="dashboard-links">
+      <Link to="/editmerchant" className="dashboard-link">Existing Merchant Data</Link>
         <Link to="/merchantdata" className="dashboard-link">Merchant Data Collection</Link>
         <Link to="/merchantonboarding" className="dashboard-link">Merchant Onboarding</Link>
         <Link to="/merchantcontent" className="dashboard-link">Merchant Content Creation</Link>

@@ -11,6 +11,7 @@ import { Merchantonboarding } from './Component/Merchantonboarding';
 import { Registration } from './Component/Registration';
 import { Allmerchantdata } from './Pages/Allmerchantdata';
 import { Contentbymerchant } from './Component/Contentbymerchant';
+import { Editmerchant } from './Component/Editmerchant';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
 
           <Route path="/registration9049127078" element={<Registration />} />
           <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+          <Route path="/editmerchant" element={<ProtectedRoute element={<Editmerchant />} />} />
+
           <Route path="/merchantcontent" element={<ProtectedRoute element={<Merchantcontent />} />} />
           <Route path="/merchantdata" element={<ProtectedRoute element={<Merchantdatacollection />} />} />
           <Route path="/merchantonboarding" element={<ProtectedRoute element={<Merchantonboarding />} />} />
