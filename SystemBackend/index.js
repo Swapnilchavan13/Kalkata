@@ -155,6 +155,52 @@ app.post('/addmerchantdata', upload.fields([
     }
   });
 
+
+// Route to handle PUT request for editing merchant data
+app.put('/editmerchantdata/:id', upload.fields([
+  { name: 'shopFrontImage', maxCount: 1 },
+  { name: 'streetImage', maxCount: 1 },
+]), async (req, res) => {
+  try {
+    const { id } = req.params; // Get the merchant ID from the request parameters
+
+    // Check if the merchant exists
+    const existingMerchant = await MerchantData.findById(id);
+    if (!existingMerchant) {
+      return res.status(404).json({ message: 'Merchant data not found' });
+    }
+
+    // Prepare updated fields
+    const updates = { ...req.body };
+
+    // Check if files are uploaded and update images
+    if (req.files && req.files['shopFrontImage']) {
+      updates.shopFrontImage = `/uploads/${req.files['shopFrontImage'][0].filename}`;
+    }
+    if (req.files && req.files['streetImage']) {
+      updates.streetImage = `/uploads/${req.files['streetImage'][0].filename}`;
+    }
+
+    // Manually update the createdAt timestamp (if you want to update it)
+    updates.createdAt = new Date().toISOString(); // Set the createdAt to current time
+    updates.updatedAt = new Date().toISOString(); // Ensure updatedAt is updated
+
+    // Update the merchant data in the database
+    const updatedMerchant = await MerchantData.findByIdAndUpdate(id, updates, {
+      new: true, // Return the updated document
+      runValidators: true, // Ensure validation is run on the updated data
+    });
+
+    // Respond with the updated merchant data
+    res.status(200).json(updatedMerchant);
+  } catch (error) {
+    console.error('Error updating merchant data:', error);
+    res.status(500).json({ message: 'Error updating merchant data', error });
+  }
+});
+
+
+
   // Route to fetch all merchant data
 app.get('/getmerchantsdata', async (req, res) => {
     try {
