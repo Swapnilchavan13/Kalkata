@@ -12,6 +12,7 @@ import { Registration } from './Component/Registration';
 import { Allmerchantdata } from './Pages/Allmerchantdata';
 import { Contentbymerchant } from './Component/Contentbymerchant';
 import { Editmerchant } from './Component/Editmerchant';
+import { MerchantcontentByTeam } from './Component/MerchantcontentByTeam';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/addcontent" element={<Contentbymerchant />} />
+
+          <Route path="/merchantcontentbyteam" element={<MerchantcontentByTeam />} />
+
 
           <Route path="/allmerchant" element={<Allmerchantdata />} />
 
