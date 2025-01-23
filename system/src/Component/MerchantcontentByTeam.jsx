@@ -1,8 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+const Login = ({ onLogin }) => {
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [pin, setPin] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('https://fieldteam.localite.services/api/registrations');
+      const data = await response.json();
+
+      const user = data.find(
+        (u) => u.mobileNumber === mobileNumber && u.loginPin === pin
+      );
+
+      if (user) {
+        onLogin(user);
+      } else {
+        setError('Invalid credentials. Please try again.');
+      }
+    } catch (err) {
+      setError('Error logging in. Please try again.');
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleLogin}>
+      <h2>Team Login for Content Upload</h2>
+      <br />
+      <br />
+        <div>
+          <label>Mobile Number</label>
+          <input
+            type="text"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>PIN</label>
+          <input
+            type="password"
+            value={pin}
+            onChange={(e) => setPin(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div>
+  );
+};
 
 export const MerchantcontentByTeam = () => {
-  const navigate = useNavigate();
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('loggedInUser');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
   const [businesses, setBusinesses] = useState([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,66 +78,58 @@ export const MerchantcontentByTeam = () => {
     discountedPercentage: '',
     image1: null,
     image2: null,
-    mobileNumber: 'Office Team',
+    mobileNumber: user?.contactPerson || 'Office Team',
   });
 
   useEffect(() => {
-    // Fetch merchants data
-    fetch('https://fieldteam.localite.services/api/getmerchants')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.merchants) {
-          const businessNames = data.merchants.map((merchant) => merchant.businessName);
-          setBusinesses(businessNames);
-          setFilteredBusinesses(businessNames.slice(0, 5)); // Show first 5 businesses initially
-        } else {
-          console.error('No merchants found');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    if (user) {
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('loggedInUser');
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      fetch('https://fieldteam.localite.services/api/getmerchants')
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.merchants) {
+            const businessNames = data.merchants.map((merchant) => merchant.businessName);
+            setBusinesses(businessNames);
+          }
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false));
+    }
+  }, [user]);
+
+  const handleLogout = () => {
+    setUser(null);
+    setFormData((prev) => ({ ...prev, mobileNumber: 'Office Team' }));
+  };
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase();
-    setFormData((prevData) => ({
-      ...prevData,
-      brand: searchTerm,
-    }));
-
-    // Filter businesses based on the search term
-    const filtered = businesses.filter((business) =>
-      business.toLowerCase().includes(searchTerm)
+    setFormData((prev) => ({ ...prev, brand: searchTerm }));
+    setFilteredBusinesses(
+      businesses.filter((b) => b.toLowerCase().includes(searchTerm)).slice(0, 5)
     );
-    setFilteredBusinesses(filtered.slice(0, 5)); // Limit to 5 results
   };
 
   const handleBusinessSelect = (business) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      brand: business,
-    }));
-    setFilteredBusinesses([]); // Hide search results after selection
+    setFormData((prev) => ({ ...prev, brand: business }));
+    setFilteredBusinesses([]);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const { name, files } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: files[0],
-    }));
+    setFormData((prev) => ({ ...prev, [name]: files[0] }));
   };
 
   const handleSubmit = async (e) => {
@@ -112,22 +164,18 @@ export const MerchantcontentByTeam = () => {
           discountedPercentage: '',
           image1: null,
           image2: null,
-          mobileNumber: 'Office Team',
+          mobileNumber: user.contactPerson,
         });
-
-        // navigate('/dashboard');
-      } else {
-        console.error('Failed to submit form');
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
+    } catch (err) {
+      console.error('Error submitting form:', err);
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (!user) {
+    return <Login onLogin={setUser} />;
   }
 
   return (
@@ -135,7 +183,16 @@ export const MerchantcontentByTeam = () => {
       <img style={{ width: '100px' }} src="https://localite.services/w_logo.png" alt="" />
       <hr />
       <br />
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+
+      <h4>Welcome, {user.contactPerson}</h4>
+      <button style={{width:'80px', fontSize:'10px'}} onClick={handleLogout}>Logout</button>
+      <br />
+      </div>
+      <br />
+
       <h3 style={{ textAlign: 'center' }}>Merchant Offer Details</h3>
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="brand">Search Business</label>

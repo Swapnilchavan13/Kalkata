@@ -38,6 +38,7 @@ export const Merchantonboarding = () => {
   const [signatureData, setSignatureData] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [loading, setLoading] = useState(false); // New state for loadin
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const clearSignature = () => {
     signatureRef.current.clear();
@@ -67,6 +68,11 @@ export const Merchantonboarding = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!termsAccepted) {
+      alert("Please accept the terms and conditions.");
+      return; // Stop form submission
+    }
 
     // Check if signature is provided
     if (!signatureData) {
@@ -499,6 +505,20 @@ export const Merchantonboarding = () => {
             />
           </div>
         )}
+<br />
+  {/* Terms and Conditions Checkbox in one line */}
+  <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)' }}> {/* Added flex and alignItems */}
+        <input
+          type="checkbox"
+          id="termsCheckbox" // Added an ID for the label to associate with
+          checked={termsAccepted}
+          onChange={(e) => setTermsAccepted(e.target.checked)}
+          style={{marginLeft:'-50px'}}
+        />
+        <label style={{marginLeft:'-100px'}} htmlFor="termsCheckbox"> {/* Use htmlFor and style the label */}
+          I accept all <a href="/terms" target="_blank" rel="noopener noreferrer" color='blue' >terms and conditions</a>
+        </label>
+      </div>
 
         {/* Submit Button */}
         <div>
