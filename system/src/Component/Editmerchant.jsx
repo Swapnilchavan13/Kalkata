@@ -7,11 +7,17 @@ export const Editmerchant = () => {
   const [selectedMerchant, setSelectedMerchant] = useState(null);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const mobileNumber = localStorage.getItem('mobileNumber');
 
   useEffect(() => {
     fetchMerchants();
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
   }, []);
 
   const fetchMerchants = async () => {
@@ -25,6 +31,28 @@ export const Editmerchant = () => {
       console.error('Error fetching merchants:', error);
     }
   };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(
+        `https://fieldteam.localite.services/api/getmerchantsdata/${mobileNumber}`
+      );
+      const data = await response.json();
+  
+      // Filter merchants with "Contact again" status and extract unique categories
+      const uniqueCategories = [
+        ...new Set(
+          data
+            .filter((merchant) => merchant.contactStatus === "Contact again")
+            .map((merchant) => merchant.category)
+        ),
+      ];
+      setCategories(uniqueCategories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -43,15 +71,19 @@ export const Editmerchant = () => {
     }));
   };
 
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
   const handleSave = async () => {
     setLoading(true);
     try {
       const updatedData = {
         ...formData,
-        updatedAt: new Date().toISOString(), // Keep the existing updatedAt
-        createdAt: new Date().toISOString(), // Set createdAt if not already set
+        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
       };
-      
+
       const response = await fetch(
         `https://fieldteam.localite.services/api/editmerchantdata/${formData._id}`,
         {
@@ -62,11 +94,11 @@ export const Editmerchant = () => {
           body: JSON.stringify(updatedData),
         }
       );
-      
+
       if (response.ok) {
         alert('Details updated successfully');
-        fetchMerchants(); // Refresh the list
-        setSelectedMerchant(null); // Reset the selected merchant
+        fetchMerchants();
+        setSelectedMerchant(null);
       } else {
         console.error('Failed to update merchant details');
       }
@@ -76,11 +108,11 @@ export const Editmerchant = () => {
       setLoading(false);
     }
   };
-  
 
-   // Filter merchants with "Contact again" status and search query
-   const filteredMerchants = merchants.filter(
+  // Filter merchants based on category, search query, and contact status
+  const filteredMerchants = merchants.filter(
     (merchant) =>
+      (selectedCategory === '' || merchant.category === selectedCategory) &&
       merchant.contactStatus === 'Contact again' &&
       merchant.nameOfBusiness.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -88,13 +120,27 @@ export const Editmerchant = () => {
   return (
     <div className="edit-merchant-container">
       <h1 className="edit-merchant-title">Update Merchant</h1>
-      <input
-        type="text"
-        className="edit-merchant-search"
-        placeholder="Search by business name"
-        value={searchQuery}
-        onChange={handleSearch}
-      />
+      <div className="filter-container">
+        <select
+          className="category-dropdown"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+        >
+          <option value="">All Categories</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          className="edit-merchant-search"
+          placeholder="Search by business name"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+      </div>
       <ul className="merchant-list">
         {filteredMerchants.map((merchant) => (
           <li
