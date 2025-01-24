@@ -253,6 +253,9 @@ app.post('/addmerchant', upload.fields([
   
       // Create the merchant data object
       const merchantData = {
+        city: body.city,
+        area: body.area,
+        mainid: body.mainid,
         personName: body.personName,
         lastName: body.lastName,
         password: body.password,
@@ -364,9 +367,12 @@ app.get('/getmerchantsself/:contactPhoneNumber', async (req, res) => {
   // POST: Add Offer Data
 app.post('/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2' }]), async (req, res) => {
     try {
-      const { brand, title, headline, description, excerptDescription, units, price, discountedPercentage, mobileNumber } = req.body;
+      const { city, area, mainid, brand, title, headline, description, excerptDescription, units, price, discountedPercentage, mobileNumber, offermade, offerposted } = req.body;
   
       const newOfferData = new OfferData({
+        city,
+        area,
+        mainid,
         brand,
         title,
         headline,
@@ -378,6 +384,8 @@ app.post('/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2' }]
         image1: req.files['image1'][0].path,
         image2: req.files['image2'][0].path,
         mobileNumber,
+        offermade,
+        offerposted
       });
   
       await newOfferData.save();
@@ -387,6 +395,30 @@ app.post('/addOfferData', upload.fields([{ name: 'image1' }, { name: 'image2' }]
       res.status(500).json({ error: 'Failed to add offer data' });
     }
   });
+
+ // PUT: Edit Offer Data (Update Status using _id)
+app.put('/editOfferData/:id', async (req, res) => {
+  try {
+    const { id } = req.params; // Use the _id field to identify the document
+    const { offermade, offerposted } = req.body;
+
+    // Find the offer by _id and update the offermade and offerposted status
+    const updatedOffer = await OfferData.findByIdAndUpdate(
+      id, // Search by _id
+      { $set: { offermade, offerposted } }, // Update the fields
+      { new: true } // Returns the updated document
+    );
+
+    if (!updatedOffer) {
+      return res.status(404).json({ error: 'Offer not found' });
+    }
+
+    res.status(200).json({ message: 'Offer data updated successfully!', updatedOffer });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update offer data' });
+  }
+});
   
   // GET: Fetch Offer Data
   app.get('/getOfferData', async (req, res) => {

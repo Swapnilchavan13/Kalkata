@@ -2,6 +2,9 @@
 const mongoose = require('mongoose');
 
 const merchantSchema = new mongoose.Schema({
+    mainid: {type: String},
+    city: {type: String},
+    area: {type: String},
     personName: { type: String, required: true },
     lastName: { type: String, required: true },
     password: { type: String, required: true },
