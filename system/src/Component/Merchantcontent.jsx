@@ -6,6 +6,12 @@ export const Merchantcontent = () => {
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false); // State to track submission status
+
+  const city = {
+    "Mumbai" : ['Juhu', 'Andheri (W)'],
+    "Kolkata" : ['Park Street', 'Ballygunge']
+  }
+
   const [formData, setFormData] = useState({
     brand: '',
     title: '',
@@ -18,13 +24,15 @@ export const Merchantcontent = () => {
     image1: null,
     image2: null,
     mobileNumber: localStorage.getItem('mobileNumber') || '',
+    offermade: false,
+    offerposted: false
   });
 
   useEffect(() => {
     const mobileNumber = localStorage.getItem('mobileNumber');
 
     if (mobileNumber) {
-      fetch(`https://fieldteam.localite.services/api/getmerchants/${mobileNumber}`)
+      fetch(`http://localhost:8050/getmerchants/${mobileNumber}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
@@ -76,7 +84,7 @@ export const Merchantcontent = () => {
     });
 
     try {
-      const response = await fetch('https://fieldteam.localite.services/api/addOfferData', {
+      const response = await fetch('http://localhost:8050/addOfferData', {
         method: 'POST',
         body: data,
       });
@@ -95,6 +103,8 @@ export const Merchantcontent = () => {
           image1: null,
           image2: null,
           mobileNumber: localStorage.getItem('mobileNumber') || '',
+          offermade: false,
+          offerposted: false
         });
 
         navigate('/dashboard'); // Redirect to the dashboard
@@ -121,6 +131,41 @@ export const Merchantcontent = () => {
       <h3 style={{textAlign:'center'}}>Merchant Offer Details</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+
+        <div>
+        <label>Select City:</label>
+        <select
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select City</option>
+          {Object.keys(city).map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label>Select Area:</label>
+        <select
+          name="area"
+          value={formData.area}
+          onChange={handleChange}
+          required
+          disabled={!formData.city} // Disable area dropdown if no city is selected
+        >
+          <option value="">Select Area</option>
+          {formData.city && city[formData.city].map((area, index) => (
+            <option key={index} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+      </div>
           <label htmlFor="brand">Select Brand</label>
           <select
           id="brand"

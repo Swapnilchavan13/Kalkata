@@ -9,7 +9,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://fieldteam.localite.services/api/registrations');
+      const response = await fetch('http://localhost:8050/registrations');
       const data = await response.json();
 
       const user = data.find(
@@ -63,11 +63,20 @@ export const MerchantcontentByTeam = () => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  const [businesses, setBusinesses] = useState([]);
+  const [businesses, setBusinesses] = useState([]); // Store full business objects
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+
+  const city = {
+    Mumbai: ['Juhu', 'Andheri (W)'],
+    Kolkata: ['Park Street', 'Ballygunge'],
+  };
+
   const [formData, setFormData] = useState({
+    mainid: '',
+    city: '',
+    area: '',
     brand: '',
     title: '',
     headline: '',
@@ -79,6 +88,8 @@ export const MerchantcontentByTeam = () => {
     image1: null,
     image2: null,
     mobileNumber: user?.contactPerson || 'Office Team',
+    offermade: false,
+    offerposted: false
   });
 
   useEffect(() => {
@@ -91,12 +102,11 @@ export const MerchantcontentByTeam = () => {
 
   useEffect(() => {
     if (user) {
-      fetch('https://fieldteam.localite.services/api/getmerchants')
+      fetch('http://localhost:8050/getmerchants')
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
-            const businessNames = data.merchants.map((merchant) => merchant.businessName);
-            setBusinesses(businessNames);
+            setBusinesses(data.merchants); // Store full business objects
           }
         })
         .catch(console.error)
@@ -113,12 +123,18 @@ export const MerchantcontentByTeam = () => {
     const searchTerm = e.target.value.toLowerCase();
     setFormData((prev) => ({ ...prev, brand: searchTerm }));
     setFilteredBusinesses(
-      businesses.filter((b) => b.toLowerCase().includes(searchTerm)).slice(0, 5)
+      businesses
+        .filter((b) => b.businessName.toLowerCase().includes(searchTerm))
+        .slice(0, 5)
     );
   };
 
   const handleBusinessSelect = (business) => {
-    setFormData((prev) => ({ ...prev, brand: business }));
+    setFormData((prev) => ({
+      ...prev,
+      mainid: business._id, // Update mainid with the business _id
+      brand: business.businessName, // Update brand with the business name
+    }));
     setFilteredBusinesses([]);
   };
 
@@ -146,14 +162,20 @@ export const MerchantcontentByTeam = () => {
     });
 
     try {
-      const response = await fetch('https://fieldteam.localite.services/api/addOfferData', {
-        method: 'POST',
-        body: data,
-      });
+      const response = await fetch(
+        'http://localhost:8050/addOfferData',
+        {
+          method: 'POST',
+          body: data,
+        }
+      );
 
       if (response.ok) {
         alert('Offer details submitted successfully!');
         setFormData({
+          mainid: '',
+          city: '',
+          area: '',
           brand: '',
           title: '',
           headline: '',
@@ -165,6 +187,8 @@ export const MerchantcontentByTeam = () => {
           image1: null,
           image2: null,
           mobileNumber: user.contactPerson,
+          offermade: false,
+          offerposted: false
         });
       }
     } catch (err) {
@@ -192,10 +216,44 @@ export const MerchantcontentByTeam = () => {
       <br />
 
       <h3 style={{ textAlign: 'center' }}>Merchant Offer Details</h3>
+      <div>
+        <label>Select City:</label>
+        <select
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select City</option>
+          {Object.keys(city).map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label>Select Area:</label>
+        <select
+          name="area"
+          value={formData.area}
+          onChange={handleChange}
+          required
+          disabled={!formData.city} // Disable area dropdown if no city is selected
+        >
+          <option value="">Select Area</option>
+          {formData.city && city[formData.city].map((area, index) => (
+            <option key={index} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+      </div>
       
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="brand">Search Business</label>
+        <label htmlFor="brand">Search Business</label>
           <input
             type="text"
             id="brand"
@@ -206,7 +264,15 @@ export const MerchantcontentByTeam = () => {
             required
           />
           {filteredBusinesses.length > 0 && (
-            <ul style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #ccc', padding: '0', marginTop: '5px' }}>
+            <ul
+              style={{
+                maxHeight: '200px',
+                overflowY: 'auto',
+                border: '1px solid #ccc',
+                padding: '0',
+                marginTop: '5px',
+              }}
+            >
               {filteredBusinesses.map((business, index) => (
                 <li
                   key={index}
@@ -218,7 +284,7 @@ export const MerchantcontentByTeam = () => {
                   }}
                   onClick={() => handleBusinessSelect(business)}
                 >
-                  {business}
+                  {business.businessName}
                 </li>
               ))}
             </ul>

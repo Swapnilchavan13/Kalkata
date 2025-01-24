@@ -8,11 +8,19 @@ export const Contentbymerchant = () => {
   const [selectedBusiness, setSelectedBusiness] = useState('');
   const [businesses, setBusinesses] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+
+  const city = {
+    "Mumbai" : ['Juhu', 'Andheri (W)'],
+    "Kolkata" : ['Park Street', 'Ballygunge']
+  }
+
   const [loginData, setLoginData] = useState({
     contactPhoneNumber: '',
     password: '',
   });
   const [formData, setFormData] = useState({
+    city: '',
+    area: '',
     brand: '',
     title: '',
     headline: '',
@@ -24,6 +32,8 @@ export const Contentbymerchant = () => {
     image1: null,
     image2: null,
     mobileNumber: 'Self',
+    offermade: false,
+    offerposted: false
   });
 
   useEffect(() => {
@@ -126,6 +136,8 @@ export const Contentbymerchant = () => {
       if (response.ok) {
         alert('Offer details submitted successfully!');
         setFormData({
+          city: '',
+          area: '',
           brand: '',
           title: '',
           headline: '',
@@ -137,6 +149,8 @@ export const Contentbymerchant = () => {
           image1: null,
           image2: null,
           mobileNumber: "Self",
+          offermade: false,
+          offerposted: false
         });
         navigate('/dashboard');
       } else {
@@ -194,6 +208,41 @@ export const Contentbymerchant = () => {
       <hr />
       <h3 style={{ textAlign: 'center' }}>Merchant Offer Details</h3>
       <form onSubmit={handleSubmit}>
+      <div>
+        <label>Select City:</label>
+        <select
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select City</option>
+          {Object.keys(city).map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label>Select Area:</label>
+        <select
+          name="area"
+          value={formData.area}
+          onChange={handleChange}
+          required
+          disabled={!formData.city} // Disable area dropdown if no city is selected
+        >
+          <option value="">Select Area</option>
+          {formData.city && city[formData.city].map((area, index) => (
+            <option key={index} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+      </div>
+
         <div className="form-group">
           <label htmlFor="brand">Select Brand</label>
           <select id="brand" name="brand" value={formData.brand} onChange={handleChange} required>

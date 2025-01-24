@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignatureCanvas from "react-signature-canvas";
 
@@ -7,6 +7,9 @@ export const Merchantonboarding = () => {
 
   const categories = ['Automotive & Transport', 'Clothing', 'Dry Cleaning Services', 'Education and Learning', 'Entertainment & Leisure', 'Food & Beverages', 'Hair Care', 'Healthcare & Wellness', 'Home & Maintenance', 'Jewellery', 'Pet & Petcare', 'Personal Care', 'Professional Services', 'Salon & Spa', 'Skin Care', 'Other'];
   const [formData, setFormData] = useState({
+    mainid:'',
+    city: '',
+    area: '',
     personName: '',
     lastName: '',
     password: '',
@@ -34,11 +37,67 @@ export const Merchantonboarding = () => {
     mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
   });
 
+  const mobileNumber = localStorage.getItem('mobileNumber');
+
+
   const signatureRef = useRef(null);
   const [signatureData, setSignatureData] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [loading, setLoading] = useState(false); // New state for loadin
   const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const [merchants, setMerchants] = useState([]);
+  const [filteredMerchants, setFilteredMerchants] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  const city = {
+    "Mumbai" : ['Juhu', 'Andheri (W)'],
+    "Kolkata" : ['Park Street', 'Ballygunge']
+  }
+
+
+   // Fetch merchants data
+   const fetchMerchants = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8050/getmerchantsdata/${mobileNumber}`
+      );
+      const data = await response.json();
+      setMerchants(data);
+    } catch (error) {
+      console.error('Error fetching merchants:', error);
+    }
+  };
+
+  // Fetch merchants on component mount
+  useEffect(() => {
+    fetchMerchants();
+  }, []);
+
+
+    // Handle search input change
+    const handleSearchChange = (e) => {
+      const query = e.target.value;
+      setSearchQuery(query);
+  
+      // Filter merchants based on the search query
+      const filtered = merchants.filter((merchant) =>
+        merchant.nameOfBusiness.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredMerchants(filtered);
+    };
+
+      // Handle merchant selection
+  const handleSelectMerchant = (merchant) => {
+    setFormData({
+      ...formData,
+      mainid: merchant._id,
+      businessName: merchant.nameOfBusiness,
+    });
+    setSearchQuery(merchant.nameOfBusiness);
+    setFilteredMerchants([]); // Clear the dropdown after selection
+  };
 
   const clearSignature = () => {
     signatureRef.current.clear();
@@ -100,7 +159,7 @@ export const Merchantonboarding = () => {
 
     try {
       // Send form data to the backend API (use the correct endpoint)
-      const response = await fetch('https://fieldteam.localite.services/api/addmerchant', {
+      const response = await fetch('http://localhost:8050/addmerchant', {
         method: 'POST',
         body: formToSubmit,
       });
@@ -108,6 +167,9 @@ export const Merchantonboarding = () => {
       if (response.ok) {
         setShowSuccessPopup(true);
         setFormData({
+          mainid:'',
+          city: '',
+          area: '',
           personName: '',
           lastName: '',
           password: '',
@@ -160,6 +222,42 @@ export const Merchantonboarding = () => {
       <h3 style={{textAlign:'center' }}>Merchant Onboarding Form</h3>
       <form onSubmit={handleSubmit}>
         <hr />
+
+        <div>
+        <label>Select City:</label>
+        <select
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select City</option>
+          {Object.keys(city).map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label>Select Area:</label>
+        <select
+          name="area"
+          value={formData.area}
+          onChange={handleChange}
+          required
+          disabled={!formData.city} // Disable area dropdown if no city is selected
+        >
+          <option value="">Select Area</option>
+          {formData.city && city[formData.city].map((area, index) => (
+            <option key={index} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+      </div>
+
         <h3>Personal Information</h3>
         <hr />
         <br />
@@ -211,16 +309,36 @@ export const Merchantonboarding = () => {
         <hr />
         <br />
         <div>
-          <label>
-            Business Name:
-            <input
-              type="text"
-              name="businessName"
-              value={formData.businessName}
-              onChange={handleChange}
-              required
-            />
-          </label>
+        <label>
+        Business Name:
+        <input
+          type="text"
+          name="businessName"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          required
+          placeholder="Search business..."
+        />
+      </label>
+      {/* Dropdown for search results */}
+      {filteredMerchants.length > 0 && (
+        <ul style={{ border: '1px solid #ccc', padding: '0' }}>
+          {filteredMerchants.map((merchant) => (
+            <li
+              key={merchant._id}
+              onClick={() => handleSelectMerchant(merchant)}
+              style={{
+                listStyle: 'none',
+                padding: '5px',
+                cursor: 'pointer',
+                background: '#f9f9f9',
+              }}
+            >
+              {merchant.nameOfBusiness}
+            </li>
+          ))}
+        </ul>
+      )}
           <label>
             Business Type:
             <select 
