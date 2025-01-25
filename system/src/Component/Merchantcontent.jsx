@@ -3,16 +3,19 @@ import { useNavigate } from 'react-router-dom';
 
 export const Merchantcontent = () => {
   const navigate = useNavigate();
-  const [businesses, setBusinesses] = useState([]);
+  const [merchants, setMerchants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false); // State to track submission status
+  const [submitting, setSubmitting] = useState(false);
 
   const city = {
-    "Mumbai" : ['Juhu', 'Andheri (W)'],
-    "Kolkata" : ['Park Street', 'Ballygunge']
-  }
+    "Mumbai": ['Juhu', 'Andheri (W)'],
+    "Kolkata": ['Park Street', 'Ballygunge'],
+  };
 
   const [formData, setFormData] = useState({
+    mainid: '',
+    city: '',
+    area: '',
     brand: '',
     title: '',
     headline: '',
@@ -25,19 +28,18 @@ export const Merchantcontent = () => {
     image2: null,
     mobileNumber: localStorage.getItem('mobileNumber') || '',
     offermade: false,
-    offerposted: false
+    offerposted: false,
   });
 
   useEffect(() => {
     const mobileNumber = localStorage.getItem('mobileNumber');
 
     if (mobileNumber) {
-      fetch(`http://localhost:8050/getmerchants/${mobileNumber}`)
+      fetch(`https://fieldteam.localite.services/api/getmerchants/${mobileNumber}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
-            const businessNames = data.merchants.map((merchant) => merchant.businessName);
-            setBusinesses(businessNames);
+            setMerchants(data.merchants); // Store the full merchant objects
           } else {
             console.error('No merchants found');
           }
@@ -56,10 +58,17 @@ export const Merchantcontent = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [name]: value };
+
+      if (name === 'brand') {
+        // Find the merchant by business name and set its _id to mainid
+        const selectedMerchant = merchants.find((merchant) => merchant.businessName === value);
+        updatedData.mainid = selectedMerchant ? selectedMerchant.mainid : '';
+      }
+
+      return updatedData;
+    });
   };
 
   const handleImageChange = (e) => {
@@ -72,7 +81,7 @@ export const Merchantcontent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true); // Disable the button
+    setSubmitting(true);
 
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -84,7 +93,7 @@ export const Merchantcontent = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:8050/addOfferData', {
+      const response = await fetch('https://fieldteam.localite.services/api/addOfferData', {
         method: 'POST',
         body: data,
       });
@@ -92,6 +101,9 @@ export const Merchantcontent = () => {
       if (response.ok) {
         alert('Offer details submitted successfully!');
         setFormData({
+          mainid: '',
+          city: '',
+          area: '',
           brand: '',
           title: '',
           headline: '',
@@ -104,18 +116,17 @@ export const Merchantcontent = () => {
           image2: null,
           mobileNumber: localStorage.getItem('mobileNumber') || '',
           offermade: false,
-          offerposted: false
+          offerposted: false,
         });
 
-        navigate('/dashboard'); // Redirect to the dashboard
-
+        navigate('/dashboard');
       } else {
         console.error('Failed to submit form');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
     } finally {
-      setSubmitting(false); // Re-enable the button
+      setSubmitting(false);
     }
   };
 
@@ -125,66 +136,62 @@ export const Merchantcontent = () => {
 
   return (
     <div style={{ padding: '10px', maxWidth: '600px', margin: 'auto' }}>
-      <img style={{width:'100px'}} src="https://localite.services/w_logo.png" alt="" />
+      <img style={{ width: '100px' }} src="https://localite.services/w_logo.png" alt="" />
       <hr />
       <br />
-      <h3 style={{textAlign:'center'}}>Merchant Offer Details</h3>
+      <h3 style={{ textAlign: 'center' }}>Merchant Offer Details</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+          <label>Select City:</label>
+          <select name="city" value={formData.city} onChange={handleChange} required>
+            <option value="">Select City</option>
+            {Object.keys(city).map((cityName) => (
+              <option key={cityName} value={cityName}>
+                {cityName}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div>
-        <label>Select City:</label>
-        <select
-          name="city"
-          value={formData.city}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select City</option>
-          {Object.keys(city).map((cityName) => (
-            <option key={cityName} value={cityName}>
-              {cityName}
-            </option>
-          ))}
-        </select>
-      </div>
+          <label>Select Area:</label>
+          <select
+            name="area"
+            value={formData.area}
+            onChange={handleChange}
+            required
+            disabled={!formData.city}
+          >
+            <option value="">Select Area</option>
+            {formData.city &&
+              city[formData.city].map((area, index) => (
+                <option key={index} value={area}>
+                  {area}
+                </option>
+              ))}
+          </select>
+        </div>
 
-      <div>
-        <label>Select Area:</label>
-        <select
-          name="area"
-          value={formData.area}
-          onChange={handleChange}
-          required
-          disabled={!formData.city} // Disable area dropdown if no city is selected
-        >
-          <option value="">Select Area</option>
-          {formData.city && city[formData.city].map((area, index) => (
-            <option key={index} value={area}>
-              {area}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="form-group">
           <label htmlFor="brand">Select Brand</label>
           <select
-          id="brand"
-          name="brand"
-          value={formData.brand}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select a Business</option>
-          {businesses.length > 0 ? (
-            businesses.map((business, index) => (
-              <option key={index} value={business}>
-                {business}
-              </option>
-            ))
-          ) : (
-            <option value="">No businesses available</option>
-          )}
-        </select>
+            id="brand"
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select a Business</option>
+            {merchants.length > 0 ? (
+              merchants.map((merchant) => (
+                <option key={merchant.mainid} value={merchant.businessName}>
+                  {merchant.businessName}
+                </option>
+              ))
+            ) : (
+              <option value="">No businesses available</option>
+            )}
+          </select>
         </div>
 
         <div className="form-group">

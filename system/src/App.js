@@ -13,6 +13,7 @@ import { Allmerchantdata } from './Pages/Allmerchantdata';
 import { Contentbymerchant } from './Component/Contentbymerchant';
 import { Editmerchant } from './Component/Editmerchant';
 import { MerchantcontentByTeam } from './Component/MerchantcontentByTeam';
+import MerchantDetails from './Pages/MerchantDetails';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
 
           <Route path="/merchantcontentbyteam" element={<MerchantcontentByTeam />} />
 
+          {/* MerchantDetails */}
+          <Route path="/onboardeddata" element={<MerchantDetails />} />
 
           <Route path="/allmerchant" element={<Allmerchantdata />} />
 

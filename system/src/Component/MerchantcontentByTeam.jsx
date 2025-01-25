@@ -9,7 +9,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8050/registrations');
+      const response = await fetch('https://fieldteam.localite.services/api/registrations');
       const data = await response.json();
 
       const user = data.find(
@@ -102,7 +102,7 @@ export const MerchantcontentByTeam = () => {
 
   useEffect(() => {
     if (user) {
-      fetch('http://localhost:8050/getmerchants')
+      fetch('https://fieldteam.localite.services/api/getmerchants')
         .then((response) => response.json())
         .then((data) => {
           if (data.merchants) {
@@ -132,7 +132,7 @@ export const MerchantcontentByTeam = () => {
   const handleBusinessSelect = (business) => {
     setFormData((prev) => ({
       ...prev,
-      mainid: business._id, // Update mainid with the business _id
+      mainid: business.mainid, // Update mainid with the business _id
       brand: business.businessName, // Update brand with the business name
     }));
     setFilteredBusinesses([]);
@@ -163,7 +163,7 @@ export const MerchantcontentByTeam = () => {
 
     try {
       const response = await fetch(
-        'http://localhost:8050/addOfferData',
+        'https://fieldteam.localite.services/api/addOfferData',
         {
           method: 'POST',
           body: data,

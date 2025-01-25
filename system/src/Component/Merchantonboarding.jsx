@@ -61,7 +61,7 @@ export const Merchantonboarding = () => {
    const fetchMerchants = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8050/getmerchantsdata/${mobileNumber}`
+        `https://fieldteam.localite.services/api/getmerchantsdata/${mobileNumber}`
       );
       const data = await response.json();
       setMerchants(data);
@@ -159,7 +159,7 @@ export const Merchantonboarding = () => {
 
     try {
       // Send form data to the backend API (use the correct endpoint)
-      const response = await fetch('http://localhost:8050/addmerchant', {
+      const response = await fetch('https://fieldteam.localite.services/api/addmerchant', {
         method: 'POST',
         body: formToSubmit,
       });
