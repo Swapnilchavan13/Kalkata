@@ -430,7 +430,22 @@ app.put('/editOfferData/:id', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch offer data' });
     }
   });
-  
+
+// GET: Fetch All Offer Data by mainid
+app.get('/getOfferDataByMainId/:mainid', async (req, res) => {
+  try {
+      const { mainid } = req.params;
+      const offers = await OfferData.find({ mainid }); // Fetch all documents with the given mainid
+      if (offers.length === 0) {
+          return res.status(404).json({ error: 'No offers found for the given mainid' });
+      }
+      res.status(200).json(offers); // Return all matching offers
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch offer data by mainid' });
+  }
+});
+
 
 
 // Start the Server
