@@ -26,6 +26,12 @@ const registrationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // Automatically set the current date if not provided
   },
+  latitude: {
+    type: Number, // Store latitude as a number
+  },
+  longitude: {
+    type: Number, // Store longitude as a number
+  },
 });
 
 const Registration = mongoose.model('Registration', registrationSchema);

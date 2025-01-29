@@ -52,7 +52,6 @@ const storage = multer.diskStorage({
 
 
 
-
   // POST Request to Register a New User
 app.post('/register', async (req, res) => {
   const { contactPerson, mobileNumber, email, loginPin, dateCreated } = req.body;
@@ -87,6 +86,35 @@ app.get('/registrations', async (req, res) => {
     res.status(500).json({ message: 'Error fetching registrations.' });
   }
 });
+
+// PUT route to update location after user logs in
+app.put('/update-location/:mobileNumber', async (req, res) => {
+  const { mobileNumber } = req.params;
+  const { latitude, longitude } = req.body; // Get latitude and longitude from the request body
+
+  try {
+    // Find the user by their mobile number
+    const user = await Registration.findOne({ mobileNumber });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update the latitude and longitude fields
+    user.latitude = latitude;
+    user.longitude = longitude;
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: 'Location updated successfully', user });
+  } catch (error) {
+    console.error('Error updating location:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
   // Route to handle POST request and file upload
 app.post('/addmerchantdata', upload.fields([
     { name: 'shopFrontImage', maxCount: 1 },
