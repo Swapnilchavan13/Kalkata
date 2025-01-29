@@ -9,7 +9,8 @@ export const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
-  const [location, setLocation] = useState(null); // Store location data
+  const [location, setLocation] = useState(null); 
+  // Store location data ok
 
   useEffect(() => {
     const fetchMerchantData = async () => {
@@ -72,7 +73,7 @@ export const Dashboard = () => {
     if (!mobileNumber) return;
 
     try {
-      const response = await fetch(`http://localhost:8050/update-location/${mobileNumber}`, {
+      const response = await fetch(`https://fieldteam.localite.services/api/update-location/${mobileNumber}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
