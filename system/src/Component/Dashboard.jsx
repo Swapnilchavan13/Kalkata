@@ -10,7 +10,7 @@ export const Dashboard = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
   const [location, setLocation] = useState(null);
-  const [worker, setWorker] = useState(null);
+  const [watchId, setWatchId] = useState(null); // To stop tracking if needed
 
   useEffect(() => {
     const fetchMerchantData = async () => {
@@ -42,24 +42,25 @@ export const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (window.Worker) {
-      const locationWorker = new Worker('locationWorker.js');
-
-      locationWorker.postMessage('startTracking');
-
-      locationWorker.onmessage = (event) => {
-        const { latitude, longitude } = event.data;
-        setLocation({ lat: latitude, lng: longitude });
-        updateLocationOnServer(latitude, longitude);
-      };
-
-      setWorker(locationWorker);
+    if (navigator.geolocation) {
+      const id = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lng: longitude });
+          updateLocationOnServer(latitude, longitude);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+        },
+        { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
+      );
+      setWatchId(id);
     } else {
-      console.error('Web Workers are not supported in this browser.');
+      console.error('Geolocation is not supported by this browser.');
     }
 
     return () => {
-      if (worker) worker.terminate();
+      if (watchId) navigator.geolocation.clearWatch(watchId);
     };
   }, []);
 
@@ -142,7 +143,7 @@ export const Dashboard = () => {
         )}
       </div>
 
-      {/* Notification Dropdown */}
+      {/* Notification Icon */}
       {showNotifications && (
         <div className="notifications-dropdown">
           <h3>Today's Visits</h3>
