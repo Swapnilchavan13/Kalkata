@@ -52,7 +52,11 @@ export const Dashboard = () => {
         (error) => {
           console.error('Error getting location:', error);
         },
-        { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
+        {
+          enableHighAccuracy: true,  // High accuracy for better precision
+          maximumAge: 0,  // Don't use a cached location
+          timeout: 5000,  // Wait for 5 seconds before giving up
+        }
       );
       setWatchId(id);
     } else {
