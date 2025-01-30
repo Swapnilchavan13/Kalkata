@@ -9,8 +9,8 @@ export const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
-  const [location, setLocation] = useState(null); 
-  // Store location data ok
+  const [location, setLocation] = useState(null);
+  const [watchId, setWatchId] = useState(null); // To stop tracking if needed
 
   useEffect(() => {
     const fetchMerchantData = async () => {
@@ -21,7 +21,7 @@ export const Dashboard = () => {
         const response = await fetch(`https://fieldteam.localite.services/api/getmerchantsdata/${mobileNumber}`);
         const data = await response.json();
 
-        const today = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
         const sortedNotifications = data
           .map(item => ({
             ...item,
@@ -42,31 +42,27 @@ export const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    // Request the device's location
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      const id = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ lat: latitude, lng: longitude });
+          updateLocationOnServer(latitude, longitude);
         },
         (error) => {
           console.error('Error getting location:', error);
-        }
+        },
+        { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
       );
+      setWatchId(id);
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
 
-    // Set interval to update location every 2 minutes (120000 ms)
-    const intervalId = setInterval(() => {
-      if (location) {
-        updateLocationOnServer(location.lat, location.lng);
-      }
-    }, 30000); // 2 minutes
-
-    // Clean up the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [location]);
+    return () => {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
 
   const updateLocationOnServer = async (latitude, longitude) => {
     const mobileNumber = localStorage.getItem('mobileNumber');
@@ -75,13 +71,8 @@ export const Dashboard = () => {
     try {
       const response = await fetch(`https://fieldteam.localite.services/api/update-location/${mobileNumber}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          latitude,
-          longitude,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ latitude, longitude }),
       });
 
       const data = await response.json();
@@ -102,18 +93,15 @@ export const Dashboard = () => {
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
-    if (hasNewNotifications) {
-      setHasNewNotifications(false);
-    }
+    if (hasNewNotifications) setHasNewNotifications(false);
   };
 
   const today = new Date().toISOString().split('T')[0];
 
-  // Redirect to Google Maps with the user's location
   const redirectToGoogleMaps = () => {
     if (location) {
       const googleMapsUrl = `https://www.google.com/maps?q=${location.lat},${location.lng}`;
-      window.open(googleMapsUrl, '_blank'); // Open in a new tab
+      window.open(googleMapsUrl, '_blank');
     } else {
       alert('Location not available');
     }
@@ -147,7 +135,7 @@ export const Dashboard = () => {
       <div className="location-container">
         {location ? (
           <>
-            <p>Location: Latitude {location.lat}, Longitude {location.lng}</p>
+            <p>Live Location: Latitude {location.lat}, Longitude {location.lng}</p>
             <button onClick={redirectToGoogleMaps}>View on Google Maps</button>
           </>
         ) : (
