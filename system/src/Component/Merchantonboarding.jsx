@@ -293,12 +293,13 @@ export const Merchantonboarding = () => {
             />
           </label>
           <label>
-            Profile Image:
+            Logo Image:
             <input
               type="file"
               name="profileImage"
               onChange={handleChange}
               accept="image/*"
+              required
             />
           </label>
         </div>
