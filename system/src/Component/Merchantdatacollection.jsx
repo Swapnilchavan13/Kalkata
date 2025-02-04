@@ -35,7 +35,7 @@ export const Merchantdatacollection = () => {
 
   const city = {
     "Mumbai" : ['Juhu', 'Andheri (W)'],
-    "Kolkata" : ['Park Street']
+    "Kolkata" : ['Park Street', 'Ballygunge']
   }
 
   const categories = {
