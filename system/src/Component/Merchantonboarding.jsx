@@ -470,14 +470,7 @@ export const Merchantonboarding = () => {
               onChange={handleChange}
             />
           </label>
-          <label>
-            Specific Requirements:
-            <textarea
-              name="specificRequirements"
-              value={formData.specificRequirements}
-              onChange={handleChange}
-            />
-          </label>
+         
           <label>
             PAN/TAN Number:
             <input
@@ -567,6 +560,16 @@ export const Merchantonboarding = () => {
             />
           </label>
         </div>
+
+        <label>
+            Merchant Location Link:
+            <input
+              name="specificRequirements"
+              value={formData.specificRequirements}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
         {/* Membership Details */}
         <div>
