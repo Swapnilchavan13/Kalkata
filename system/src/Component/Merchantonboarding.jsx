@@ -567,7 +567,6 @@ export const Merchantonboarding = () => {
               name="specificRequirements"
               value={formData.specificRequirements}
               onChange={handleChange}
-              required
             />
           </label>
 
