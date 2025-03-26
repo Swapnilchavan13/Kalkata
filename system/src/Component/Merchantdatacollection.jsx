@@ -40,42 +40,76 @@ export const Merchantdatacollection = () => {
 
   const categories = {
     'FOOD & BEVERAGES': [
-      'Fine Dining', 'Casual Dining', 'Restaurant (fast food)', 'Ethnic Cuisines', 'Vegan & Vegetarian options', 'Bakeries', 'Cake Shops', 'Cafes (Coffee Shop)', 'Tea House', 'Bars & Nightlife (Pubs)', 'Resto Bar', 'Club Lounges', 'Speciality Foods', 'Sweets Store', 'Milk Dairy Store', 'Icecream Parlour', 'Pop- Up Eateries Food Truck', 'Catering Service', 'Home kitchen services', 'Wine Shops', 'Idli & Dosa Shops', 'Organic Food Stores', 'Cloud Kitchen',
+      'Fine Dining', 'Casual Dining Restaurants', 'Fast Foods CAFES & Tea Houses', 'Ethnic Cuisines', 'Bakeries & Cake Shops', 
+      'Restro- Bars & Nightlife (Pubs/Clubs)', 'Sweets Store', 'Milk Dairy Store', 'Icecream Parlour', 'Health/ Nutrition food stores', 
+      'Private chefs', 'Pop- Up Eateries Food Truck', 'Event Catering Service', 'Home kitchen services', 'Wine Shops', 
+      'Organic Food Stores', 'Cloud Kitchen', 'Vegetable Vendors/ Farmers market', 'Meat / Fish / Chicken'
     ],
     'PROFESSIONAL SERVICES': [
-      'Law Firms', 'Notaries', 'Real Estate Agency', 'Marketing Agency', 'Financial Services', 'Technology Services', 'Consulting Services', 'Accounting services', 'Graphic Designer', 'Website Designer', 'Photographer/ Videographer', 'Interior Designer', 'Architecture Firm', 'Lawyer', 'Webinars', 'Photographer/ Videographer', 'Graphic Designer', 'Website Designer',
+      'Law Firms', 'Notaries', 'Real Estate Agency', 'Real Estate Projects', 'Marketing Agency', 
+      'Financial Services', 'Technology Services', 'Consulting Services', 'Accounting services', 'Graphic Designer', 
+      'Website Designer', 'Photographer/ Videographer', 'Interior Designer', 'Architechture Firm', 'Lawyer'
     ],
     'ENTERTAINMENT & LEISURE': [
-      'Movie Theaters', 'Drama Theaters/ Playhouse', 'Performing Arts Theaters', 'Sport Clubs & Academy', 'Recreation Clubs', 'Swimming Clubs', 'Dancing Workshops', 'Singing Workshops', 'Acting Classes', 'Gaming Zone', 'Amusement parks/ Adventures', 'Bands/ Djs', 'Workshops & Classes', 'Dance Classes', 'Music Schools', 'Art Classes',
+      'Movie Theaters', 'Drama Theaters/ Playhouse', 'Sport Clubs & Academy', 'Recreation Clubs', 'Event Planners', 
+      'Venue Rental', 'Dancing Workshops', 'Singing Workshops', 'Acting Classes', 'Workshops & Classes', 
+      'Gaming Zone', 'Playzones', 'Amusement parks/ Adventures', 'Bands/ Djs'
     ],
     'HEALTHCARE & WELLNESS': [
-      'General Clinics', 'Hospital & Medical Centres', 'Maternity Centre', 'Gynecologist Clinics', 'Diabtologist and endocrinologist', 'Special Children School', 'Kids Clothing & Products', 'Gastro Specialist', 'Psychiatrists', 'Mental Health Service', 'Physiotherapist', 'Acupuncturists', 'Orthopedic', 'Chiroprators', 'Pillates', 'Weight Loss Clinics', 'Dental Care', 'Health & Wellness Retreats', 'Yoga Retreats', 'Pediatrician', 'Homeopathy', 'Allergy Clinics', 'Counsellors', 'Dietician',
+      'General Clinics', 'Hospital & Medical Centres', 'Maternity Centre', 'Gynecologist Clinics', 'Diabtologist and endocrinologist', 
+      'Gastro Specialist', 'Healthcare Agency', 'Diagnostics Center', 'Ayurvedic Clinics', 'Ayurvedic Medicine', 
+      'Specialized Doctors/ Treatments', 'Dermatologist', 'Cardiologist', 'Dentists', 'Orthopedic', 
+      'Physiotherapist', 'Pilllates', 'Mental Health Service', 'Psychiatrists', 'Psychologist', 
+      'Chiroprators', 'Spiritual Health Expert', 'Weight Loss Clinics', 'Acupuncturists', 'Naturopathy', 
+      'Pharmacies & Medical Stores', 'Homeopathy', 'Pediatrician', 'Sleep Clinic', 'Allergy Clinics', 
+      'Dietician', 'Pet Clinics & Grooming services'
     ],
     'AUTOMOTIVE & TRANSPORT': [
-      'Used Car Dealership', 'Car Showrooms', 'Motorcycle Dealership', 'Motorcycle Showrooms', 'Tire Shops', 'Servicing center', 'Auto Spare Parts & Accessories', 'Car Washig Center', 'Bus/ Tempo Rental', 'Charter', 'Bicycle Shops', 'Electric Vehicle Charging Station', 'Cars Rental', 'Cab Services', 'Tire Shops', 'Motorcycle Showrooms',
+      'Used Car Dealership', 'Car Showrooms', 'Motorcycle Dealership', 'Motorcycle Showrooms', 'Automobile Servicing center', 
+      'Cars Upholstery shops', 'Auto Spare Parts & Accesories', 'Cab Services', 'Cars Rental', 'Bus/ Tempo Rental', 
+      'Bicycle Shops', 'Electric Vehicle Charging Station', 'Tours & Travel Agency'
     ],
     'EDUCATION & LEARNING': [
-      'Private Schools', 'Public Schools', 'Preschool', 'Supplementary (Tutoring Service)', 'Colleges', 'Universities', 'Specialty Services', 'Continuing Education', 'Vocational Training', 'Special Children School', 'Home tutors', 'Language Classes (English/ Foreign)', 'Fashion Design School', 'Sporting goods store', 'Virtual Schools',
+      'Private Schools', 'Public Schools', 'Preschool', 'Supplementary (Tutoring Service)', 'Special Children School', 
+      'Day Care Centre', 'Colleges', 'Universities', 'Vocational Training', 'Career Training Programs', 
+      'Continuing Education', 'Book Stores', 'Language Classes (English/ Foreign)', 'Music Classes', 'Dance Classes', 
+      'Cooking classes', 'Art Classes', 'Pottery Class', 'Wood Working Classes', 'Handwriting Classes', 
+      'Exam Prepration', 'Virtual Schools', 'Home tutors', 'Fashion Design School', 'Sporting / Gym goods store'
     ],
     'RETAIL & SHOPPING': [
-      'Clothing (Men)', 'Clothing Women', 'Women Sarees & Ghagras', 'Boutiques', 'Home Decor/ Interior', 'Beauty Salons', 'Mobile Phones Store', 'Grocery stores/ Supermarkets', 'Toy Store', 'Jewellery Stores', 'Clothing Accessories', 'Footware Stores', 'Gift shop', 'Printing services', 'Speciality Store', 'Bags', 'Personal Care', 'Health/ Nutrition food stores', 'Personal Trainner', 'Pet Supply Store', 'Laundry Services', 'Cleaning Services(Residential Cleaner)',
+      'Clothing (Men)', 'Clothing Women', 'Women Sarees & Ghagras', 'Boutiques', 'Kids Clothing & Products', 
+      'Electronic Stores', 'Mobile Phones Store', 'Mobile Phone Accessories Stores', 'Office Goods', 'Printing services', 
+      'Florist', 'Gift shop', 'Toy Store', 'Speciality Store', 'Grocery stores/ Supermarkets', 'Jewellery Stores', 
+      'Uniform & Shoes Shop', 'Thrift Shop', 'Pet Food Supply Store', 'Art & Craft Supplies', 'Stationary Store', 
+      'Clothing Accessories', 'Bags', 'Watch Stores', 'Footware Stores', 'Opticians', 'Sustainable Goods', 
+      'Organic Clothing', 'Music Instuments store', 'Cosmetic Stores'
     ],
     'HOME & MAINTAINANCE': [
-      'Hardware store', 'Home Goods', 'Nail Salon', 'Painting & Ceiling Services', 'Tree Cutting Services', 'Decorators', 'Gardening & landscaping', 'Plumbing Services and Store', 'Repair Shops', 'Cleaning Services(Residential Cleaner)', 'Pest Control (Exterminatiors)', 'Domestic help Agencies', 'Cleaning Services(Residential Cleaner)', 'Smart Home installations(Home Automation)',
+      'Hardware store', 'Home Goods', 'Home Decor/ Interior', 'Painting & Ceiling Services', 'Decorators', 
+      'Kitchen appliance & supply store', 'Plant Nursery', 'Gardening & landscaping', 'Swimming pool contractor', 
+      'Plumbling Services and Store', 'Electronic Repair Shops', 'Electricians / Electrical supply store', 
+      'HVAC Technicians', 'Home Cleaning Services', 'Commercial Cleaning', 'Laundry Services', 
+      'Pest Control (Exterminatiors)', 'Smart Home installations(Home Automation)', 'Sewing Supplies'
     ],
     'PERSONAL CARE': [
-      'Hair Salons', 'Beauty Salons', 'Day Spas', 'Massage Parlours', 'Astheticians', 'Makeup Artist', 'Massage Parlours', 'Personal Trainner', 'Pet Grooming Services', 'Yoga Studios', 'Pet clinic',
+      'Hair & Beauty Salons', 'Nail Salon', 'Day Spas', 'Parlours Massage', 'Makeup Artist', 
+      'Astheticians', 'Personal Trainner', 'GYMs', 'Yoga Studios', 'Fitness Center', 
+      'Holistic Health Services', 'Tattoo'
     ],
     'MISCELLANEOUS': [
-      'Co-Working Space', 'Courier Services', 'Lounges', 'Post office', 'Non-Profit Charities', 'Waste Management Services', 'Recycling Center', 'Utilities Water', 'Gas', 'Electricians', 'Security Guard Services', 'Security Services (Home Security Systems)',
+      'Co-Working Space', 'Courier Services', 'Talior', 'Pandits', 'Waste Management Services', 
+      'Utilities Water', 'Gas', 'Recycling Center', 'Youth Program', 'Security Guard Services', 
+      'Securtity Services (Home Security Systems)', 'Moving & Storage Company'
     ],
     'ACCOMODATION': [
-      'Hotels', 'Hostels', 'Rentals/ PGs', 'Community Centers',
+      'Hotels', 'Lounges', 'Hostels', 'Rentals/ PGs', 'Community Centers'
     ],
     'COMMUNITY & GOVERNMENT': [
-      'Libraries', 'Municipal offices', 'Religious Organisation', 'Community Centers', 'Waste Management Services', 'Recycling Center', 'Youth Program', 'Moving & Storage Company', 'Book Stores', 'Stationary Store', 'Smart Home installations(Home Automation)', 'Sewing Supplies', 'Pest Control (Exterminatiors)',
-    ],
+      'Libraries', 'Post office', 'Municipal offices', 'Non-Profit Charities', 'Religious Organisation', 
+      'Waste Management Services', 'Recycling Center', 'Youth Program'
+    ]
   };
+  
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;

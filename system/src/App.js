@@ -14,6 +14,7 @@ import { Contentbymerchant } from './Component/Contentbymerchant';
 import { Editmerchant } from './Component/Editmerchant';
 import { MerchantcontentByTeam } from './Component/MerchantcontentByTeam';
 import MerchantDetails from './Pages/MerchantDetails';
+import { Contentmanagement } from './Component/Contentmanagement';
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
           <Route path="/allmerchant" element={<Allmerchantdata />} />
 
           <Route path="/registration9049127078" element={<Registration />} />
+          <Route path="/contentmanagement" element={<Contentmanagement />} />
+
           <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
           <Route path="/editmerchant" element={<ProtectedRoute element={<Editmerchant />} />} />
 

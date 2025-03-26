@@ -5,7 +5,79 @@ import SignatureCanvas from "react-signature-canvas";
 export const Merchantonboarding = () => {
   const navigate = useNavigate();
 
-  const categories = ['Automotive & Transport', 'Clothing', 'Dry Cleaning Services', 'Education and Learning', 'Entertainment & Leisure', 'Food & Beverages', 'Hair Care', 'Healthcare & Wellness', 'Home & Maintenance', 'Jewellery', 'Pet & Petcare', 'Personal Care', 'Professional Services', 'Salon & Spa', 'Skin Care', 'Other'];
+  const categories = {
+    'FOOD & BEVERAGES': [
+      'Fine Dining', 'Casual Dining Restaurants', 'Fast Foods CAFES & Tea Houses', 'Ethnic Cuisines', 'Bakeries & Cake Shops', 
+      'Restro- Bars & Nightlife (Pubs/Clubs)', 'Sweets Store', 'Milk Dairy Store', 'Icecream Parlour', 'Health/ Nutrition food stores', 
+      'Private chefs', 'Pop- Up Eateries Food Truck', 'Event Catering Service', 'Home kitchen services', 'Wine Shops', 
+      'Organic Food Stores', 'Cloud Kitchen', 'Vegetable Vendors/ Farmers market', 'Meat / Fish / Chicken'
+    ],
+    'PROFESSIONAL SERVICES': [
+      'Law Firms', 'Notaries', 'Real Estate Agency', 'Real Estate Projects', 'Marketing Agency', 
+      'Financial Services', 'Technology Services', 'Consulting Services', 'Accounting services', 'Graphic Designer', 
+      'Website Designer', 'Photographer/ Videographer', 'Interior Designer', 'Architechture Firm', 'Lawyer'
+    ],
+    'ENTERTAINMENT & LEISURE': [
+      'Movie Theaters', 'Drama Theaters/ Playhouse', 'Sport Clubs & Academy', 'Recreation Clubs', 'Event Planners', 
+      'Venue Rental', 'Dancing Workshops', 'Singing Workshops', 'Acting Classes', 'Workshops & Classes', 
+      'Gaming Zone', 'Playzones', 'Amusement parks/ Adventures', 'Bands/ Djs'
+    ],
+    'HEALTHCARE & WELLNESS': [
+      'General Clinics', 'Hospital & Medical Centres', 'Maternity Centre', 'Gynecologist Clinics', 'Diabtologist and endocrinologist', 
+      'Gastro Specialist', 'Healthcare Agency', 'Diagnostics Center', 'Ayurvedic Clinics', 'Ayurvedic Medicine', 
+      'Specialized Doctors/ Treatments', 'Dermatologist', 'Cardiologist', 'Dentists', 'Orthopedic', 
+      'Physiotherapist', 'Pilllates', 'Mental Health Service', 'Psychiatrists', 'Psychologist', 
+      'Chiroprators', 'Spiritual Health Expert', 'Weight Loss Clinics', 'Acupuncturists', 'Naturopathy', 
+      'Pharmacies & Medical Stores', 'Homeopathy', 'Pediatrician', 'Sleep Clinic', 'Allergy Clinics', 
+      'Dietician', 'Pet Clinics & Grooming services'
+    ],
+    'AUTOMOTIVE & TRANSPORT': [
+      'Used Car Dealership', 'Car Showrooms', 'Motorcycle Dealership', 'Motorcycle Showrooms', 'Automobile Servicing center', 
+      'Cars Upholstery shops', 'Auto Spare Parts & Accesories', 'Cab Services', 'Cars Rental', 'Bus/ Tempo Rental', 
+      'Bicycle Shops', 'Electric Vehicle Charging Station', 'Tours & Travel Agency'
+    ],
+    'EDUCATION & LEARNING': [
+      'Private Schools', 'Public Schools', 'Preschool', 'Supplementary (Tutoring Service)', 'Special Children School', 
+      'Day Care Centre', 'Colleges', 'Universities', 'Vocational Training', 'Career Training Programs', 
+      'Continuing Education', 'Book Stores', 'Language Classes (English/ Foreign)', 'Music Classes', 'Dance Classes', 
+      'Cooking classes', 'Art Classes', 'Pottery Class', 'Wood Working Classes', 'Handwriting Classes', 
+      'Exam Prepration', 'Virtual Schools', 'Home tutors', 'Fashion Design School', 'Sporting / Gym goods store'
+    ],
+    'RETAIL & SHOPPING': [
+      'Clothing (Men)', 'Clothing Women', 'Women Sarees & Ghagras', 'Boutiques', 'Kids Clothing & Products', 
+      'Electronic Stores', 'Mobile Phones Store', 'Mobile Phone Accessories Stores', 'Office Goods', 'Printing services', 
+      'Florist', 'Gift shop', 'Toy Store', 'Speciality Store', 'Grocery stores/ Supermarkets', 'Jewellery Stores', 
+      'Uniform & Shoes Shop', 'Thrift Shop', 'Pet Food Supply Store', 'Art & Craft Supplies', 'Stationary Store', 
+      'Clothing Accessories', 'Bags', 'Watch Stores', 'Footware Stores', 'Opticians', 'Sustainable Goods', 
+      'Organic Clothing', 'Music Instuments store', 'Cosmetic Stores'
+    ],
+    'HOME & MAINTAINANCE': [
+      'Hardware store', 'Home Goods', 'Home Decor/ Interior', 'Painting & Ceiling Services', 'Decorators', 
+      'Kitchen appliance & supply store', 'Plant Nursery', 'Gardening & landscaping', 'Swimming pool contractor', 
+      'Plumbling Services and Store', 'Electronic Repair Shops', 'Electricians / Electrical supply store', 
+      'HVAC Technicians', 'Home Cleaning Services', 'Commercial Cleaning', 'Laundry Services', 
+      'Pest Control (Exterminatiors)', 'Smart Home installations(Home Automation)', 'Sewing Supplies'
+    ],
+    'PERSONAL CARE': [
+      'Hair & Beauty Salons', 'Nail Salon', 'Day Spas', 'Parlours Massage', 'Makeup Artist', 
+      'Astheticians', 'Personal Trainner', 'GYMs', 'Yoga Studios', 'Fitness Center', 
+      'Holistic Health Services', 'Tattoo'
+    ],
+    'MISCELLANEOUS': [
+      'Co-Working Space', 'Courier Services', 'Talior', 'Pandits', 'Waste Management Services', 
+      'Utilities Water', 'Gas', 'Recycling Center', 'Youth Program', 'Security Guard Services', 
+      'Securtity Services (Home Security Systems)', 'Moving & Storage Company'
+    ],
+    'ACCOMODATION': [
+      'Hotels', 'Lounges', 'Hostels', 'Rentals/ PGs', 'Community Centers'
+    ],
+    'COMMUNITY & GOVERNMENT': [
+      'Libraries', 'Post office', 'Municipal offices', 'Non-Profit Charities', 'Religious Organisation', 
+      'Waste Management Services', 'Recycling Center', 'Youth Program'
+    ]
+  };
+    
+  
   const [formData, setFormData] = useState({
     mainid:'',
     city: '',
@@ -48,7 +120,11 @@ export const Merchantonboarding = () => {
 
   const [merchants, setMerchants] = useState([]);
   const [filteredMerchants, setFilteredMerchants] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('')
+  
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSubCategory, setSelectedSubCategory] = useState('');
+;
 
 
   const city = {
@@ -88,16 +164,21 @@ export const Merchantonboarding = () => {
       setFilteredMerchants(filtered);
     };
 
-      // Handle merchant selection
-  const handleSelectMerchant = (merchant) => {
-    setFormData({
-      ...formData,
-      mainid: merchant._id,
-      businessName: merchant.nameOfBusiness,
-    });
-    setSearchQuery(merchant.nameOfBusiness);
-    setFilteredMerchants([]); // Clear the dropdown after selection
-  };
+    const handleSelectMerchant = (merchant) => {
+      setFormData({
+        ...formData,
+        mainid: merchant._id,
+        businessName: merchant.nameOfBusiness,
+      });
+    
+      setSearchQuery(merchant.nameOfBusiness);
+      setFilteredMerchants([]); // Clear dropdown after selection
+    
+      // Set category and subcategory
+      setSelectedCategory(merchant.category);
+      setSelectedSubCategory(merchant.subCategory);
+    };
+    
 
   const clearSignature = () => {
     signatureRef.current.clear();
@@ -341,18 +422,34 @@ export const Merchantonboarding = () => {
         </ul>
       )}
           <label>
-            Business Type:
+            Business Category:
             <select 
           name="businessType" 
           value={formData.businessType} 
           onChange={handleChange} 
         >
-          <option value="">Select Business Type</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>{category}</option>
+          <option value="">Select Category</option>
+          {Object.keys(categories).map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
           ))}
         </select>
           </label>
+
+          
+
+          {selectedCategory && (
+  <div>
+    <h4>Category: {selectedCategory}</h4>
+    <h4>Subcategory: {selectedSubCategory}</h4>
+  </div>
+)}
+<br />
+
+
+
+
           <label>
             Business Address:
             <input
