@@ -29,7 +29,9 @@ const merchantSchema = new mongoose.Schema({
     contactPhoneNumber: { type: String, required: true },
     contactPhoneNumber2: { type: String },
     membershipPlan: { type: String },
-    mobileNumber: { type: String, required: true }
+    mobileNumber: { type: String, required: true },
+    category: { type: String },  // Added category key
+    subCategory: { type: String }, // Added subCategory key
 }, {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
   });

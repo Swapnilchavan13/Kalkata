@@ -275,7 +275,7 @@ app.post('/addmerchant', upload.fields([
       const { body, files } = req;
   
       // Check if the required fields are present
-      if (!body.personName || !body.lastName || !body.password || !body.businessName || !body.businessType || !body.businessAddress || !body.contactEmail || !body.contactPhoneNumber || !body.mobileNumber) {
+      if (!body.personName || !body.lastName || !body.password || !body.businessName || !body.businessAddress || !body.contactEmail || !body.contactPhoneNumber || !body.mobileNumber) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
   
@@ -308,7 +308,9 @@ app.post('/addmerchant', upload.fields([
         contactPhoneNumber: body.contactPhoneNumber,
         contactPhoneNumber2: body.contactPhoneNumber2,
         membershipPlan: body.membershipPlan,
-        mobileNumber: body.mobileNumber
+        mobileNumber: body.mobileNumber,
+        category: body.category,  // Added category key
+        subCategory: body.subCategory // Added subCategory key
       };
   
       // Create a new merchant document
