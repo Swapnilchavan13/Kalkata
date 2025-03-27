@@ -107,6 +107,8 @@ export const Merchantonboarding = () => {
     panTanImage: null,
     gstinImage: null,
     mobileNumber: localStorage.getItem('mobileNumber') || '', // Retrieve mobile number
+    category: '',  // Added category key
+    subCategory: '' // Added subCategory key
   });
 
   const mobileNumber = localStorage.getItem('mobileNumber');
@@ -122,9 +124,6 @@ export const Merchantonboarding = () => {
   const [filteredMerchants, setFilteredMerchants] = useState([]);
   const [searchQuery, setSearchQuery] = useState('')
   
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSubCategory, setSelectedSubCategory] = useState('');
-;
 
 
   const city = {
@@ -169,14 +168,13 @@ export const Merchantonboarding = () => {
         ...formData,
         mainid: merchant._id,
         businessName: merchant.nameOfBusiness,
+        category: merchant.category,  // Storing category
+        subCategory: merchant.subCategory // Storing subcategory
       });
     
       setSearchQuery(merchant.nameOfBusiness);
       setFilteredMerchants([]); // Clear dropdown after selection
     
-      // Set category and subcategory
-      setSelectedCategory(merchant.category);
-      setSelectedSubCategory(merchant.subCategory);
     };
     
 
@@ -421,7 +419,7 @@ export const Merchantonboarding = () => {
           ))}
         </ul>
       )}
-          <label>
+          {/* <label>
             Business Category:
             <select 
           name="businessType" 
@@ -435,14 +433,13 @@ export const Merchantonboarding = () => {
               </option>
           ))}
         </select>
-          </label>
+          </label> */}
 
           
-
-          {selectedCategory && (
+          {formData.category && (
   <div>
-    <h4>Category: {selectedCategory}</h4>
-    <h4>Subcategory: {selectedSubCategory}</h4>
+    <h4>Category: {formData.category}</h4>
+    <h4>Subcategory: {formData.subCategory}</h4>
   </div>
 )}
 <br />
