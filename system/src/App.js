@@ -15,6 +15,7 @@ import { Editmerchant } from './Component/Editmerchant';
 import { MerchantcontentByTeam } from './Component/MerchantcontentByTeam';
 import MerchantDetails from './Pages/MerchantDetails';
 import { Contentmanagement } from './Component/Contentmanagement';
+import { Merchantmarketingform } from './Component/Merchantmarketingform';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           {/* MerchantDetails */}
           <Route path="/onboardeddata" element={<MerchantDetails />} />
 
+
           <Route path="/allmerchant" element={<Allmerchantdata />} />
 
           <Route path="/registration9049127078" element={<Registration />} />
@@ -41,6 +43,8 @@ function App() {
           <Route path="/merchantcontent" element={<ProtectedRoute element={<Merchantcontent />} />} />
           <Route path="/merchantdata" element={<ProtectedRoute element={<Merchantdatacollection />} />} />
           <Route path="/merchantonboarding" element={<ProtectedRoute element={<Merchantonboarding />} />} />
+          <Route path="/mechantmarketing" element={<ProtectedRoute element={<Merchantmarketingform />} />} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

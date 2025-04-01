@@ -133,6 +133,8 @@ export const Dashboard = () => {
         <Link to="/merchantdata" className="dashboard-link">Merchant Data Collection</Link>
         <Link to="/merchantonboarding" className="dashboard-link">Merchant Onboarding</Link>
         <Link to="/merchantcontent" className="dashboard-link">Merchant Content Creation</Link>
+        <Link to="/mechantmarketing" className="dashboard-link">Merchant marketing Form</Link>
+
       </div>
 
       {/* Location Display */}
