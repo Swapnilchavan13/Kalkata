@@ -13,6 +13,8 @@ const MerchantData = require('./models/MerchantData');
 const OfferData = require('./models/OfferData');
 
 const Registration = require('./models/Registration'); // Add this import
+const MarketingData = require('./models/MarketingData'); // Import the model
+
 
 
 // MongoDB Connection
@@ -473,6 +475,64 @@ app.get('/getOfferDataByMainId/:mainid', async (req, res) => {
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Failed to fetch offer data by mainid' });
+  }
+});
+
+
+// POST route to handle form submission
+app.post('/addmarketingdata', upload.fields([
+  { name: 'shopImage1', maxCount: 1 },
+  { name: 'shopImage2', maxCount: 1 },
+  { name: 'shopImage3', maxCount: 1 }
+]), async (req, res) => {
+  try {
+    const shopImage1 = req.files['shopImage1'] ? `/uploads/${req.files['shopImage1'][0].filename}` : null;
+    const shopImage2 = req.files['shopImage2'] ? `/uploads/${req.files['shopImage2'][0].filename}` : null;
+    const shopImage3 = req.files['shopImage3'] ? `/uploads/${req.files['shopImage3'][0].filename}` : null;
+
+    // Create a new marketing data object
+    const newMarketingData = new MarketingData({
+      mainid: req.body.mainid,
+      businessName: req.body.businessName,
+      googleMapLink: req.body.googleMapLink,
+      googleReviewScore: req.body.googleReviewScore,
+      instaPageLink: req.body.instaPageLink,
+      instaPosts: req.body.instaPosts,
+      instaFollowers: req.body.instaFollowers,
+      instaScore: req.body.instaScore,
+      youtubePageLink: req.body.youtubePageLink,
+      youtubeVideos: req.body.youtubeVideos,
+      youtubeViews: req.body.youtubeViews,
+      whatsappBusiness: req.body.whatsappBusiness,
+      whatsappStore: req.body.whatsappStore,
+      whatsappGroup: req.body.whatsappGroup,
+      anyPamplate: req.body.anyPamplate,
+      customerBase: req.body.customerBase,
+      turnover: req.body.turnover,
+      realEstatePhotos: req.body.realEstatePhotos,
+      shopImage1,
+      shopImage2,
+      shopImage3
+    });
+
+    await newMarketingData.save();
+
+    res.status(201).json({ success: true, message: 'Marketing data added successfully', data: newMarketingData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+
+// **GET API to Fetch Marketing Data**
+app.get('/getmarketingdata', async (req, res) => {
+  try {
+    const marketingData = await MarketingData.find();
+    res.status(200).json({ success: true, data: marketingData });
+  } catch (error) {
+    console.error('Error fetching marketing data:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch data' });
   }
 });
 
