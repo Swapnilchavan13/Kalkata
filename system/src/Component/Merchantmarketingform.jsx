@@ -115,6 +115,7 @@ export const Merchantmarketingform = () => {
     formDataToSubmit.append('customerBase', formData.customerBase);
     formDataToSubmit.append('turnover', formData.turnover);
     formDataToSubmit.append('realEstatePhotos', formData.realEstatePhotos);
+    formDataToSubmit.append('mobileNumber', localStorage.getItem('mobileNumber') || ''); // Retrieve mobile number
   
     // Append images to FormData if available
     if (formData.shopImage1) {

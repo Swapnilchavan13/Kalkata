@@ -266,6 +266,27 @@ app.get('/getmerchantsdata/:mobileNumber', async (req, res) => {
     }
 });
 
+// Route to fetch merchant data by _id
+app.get('/getsinglemerchantsdata/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      // Fetch merchant data by _id
+      const merchant = await MerchantData.findById(id);
+
+      if (!merchant) {
+          return res.status(404).json({ message: 'Merchant not found' });
+      }
+
+      // Respond with the merchant data
+      res.status(200).json(merchant);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching merchant data by ID', error });
+  }
+});
+
+
 
 // POST route for merchant onboarding
 app.post('/addmerchant', upload.fields([
@@ -532,6 +553,23 @@ app.get('/getmarketingdata', async (req, res) => {
     res.status(200).json({ success: true, data: marketingData });
   } catch (error) {
     console.error('Error fetching marketing data:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch data' });
+  }
+});
+
+
+app.get('/getmarketingdata/:mainid', async (req, res) => {
+  try {
+    const { mainid } = req.params;
+    const marketingData = await MarketingData.findOne({ mainid });
+
+    if (!marketingData) {
+      return res.status(404).json({ success: false, message: 'No data found for this mainid' });
+    }
+
+    res.status(200).json({ success: true, data: marketingData });
+  } catch (error) {
+    console.error('Error fetching marketing data by mainid:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch data' });
   }
 });
