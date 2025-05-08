@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const MerchantFeedbackForm = () => {
+    
   const [formData, setFormData] = useState({
     merchantName: "",
     contactPerson: "",
@@ -70,6 +71,7 @@ const MerchantFeedbackForm = () => {
     });
     const data = await res.json();
     alert(data.message);
+    window.location.reload(); // 🔁 Refresh the page
   };
 
   return (
