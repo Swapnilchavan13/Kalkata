@@ -12,6 +12,6 @@ const feedbackSchema = new mongoose.Schema({
   appRating: { type: String, required: true },
   subscriptionDecision: { type: String, required: true },
   comments: { type: String },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("MerchantFeedback", feedbackSchema);
