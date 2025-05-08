@@ -74,7 +74,7 @@ const MerchantFeedbackForm = () => {
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 600, margin: "auto" }}>
-      <h2>Merchant Feedback Form</h2>
+      <h2>Merchant Review Form</h2>
       <br />
       
       <label>Name Of Merchant:</label>
