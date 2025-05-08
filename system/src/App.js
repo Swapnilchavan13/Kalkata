@@ -16,6 +16,7 @@ import { MerchantcontentByTeam } from './Component/MerchantcontentByTeam';
 import MerchantDetails from './Pages/MerchantDetails';
 import { Contentmanagement } from './Component/Contentmanagement';
 import { Merchantmarketingform } from './Component/Merchantmarketingform';
+import MerchantFeedbackForm from './Pages/MerchantFeedbackForm';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
 
 
           <Route path="/allmerchant" element={<Allmerchantdata />} />
+          <Route path="/merchantfeedbackform" element={<MerchantFeedbackForm />} />
+
 
           <Route path="/registration9049127078" element={<Registration />} />
           <Route path="/contentmanagement" element={<Contentmanagement />} />
