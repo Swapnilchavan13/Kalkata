@@ -16,6 +16,8 @@ const marketingSchema = new mongoose.Schema({
   whatsappStore: String,    // "YES" or "NO"
   whatsappGroup: String,    // "YES" or "NO"
   anyPamplate: String,      // "YES" or "NO"
+  interested: String,
+  catalaugefilled: String,
   shopImage1: String,       // File path or URL
   shopImage2: String,
   shopImage3: String,

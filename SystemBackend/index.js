@@ -554,6 +554,8 @@ app.post('/addmarketingdata', upload.fields([
       whatsappStore: req.body.whatsappStore,
       whatsappGroup: req.body.whatsappGroup,
       anyPamplate: req.body.anyPamplate,
+      catalaugefilled: req.body.catalaugefilled,
+      anyPamplate: req.body.anyPamplate,
       customerBase: req.body.customerBase,
       turnover: req.body.turnover,
       realEstatePhotos: req.body.realEstatePhotos,
