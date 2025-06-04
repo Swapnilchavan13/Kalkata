@@ -24,6 +24,10 @@ export const Merchantmarketingform = () => {
     whatsappStore: 'NO',
     whatsappGroup: 'NO',
     anyPamplate: 'NO',
+    
+    interested: 'NO',
+    catalaugefilled: 'NO',
+
     shopImage1: null,
     shopImage2: null,
     shopImage3: null,
@@ -112,6 +116,10 @@ export const Merchantmarketingform = () => {
     formDataToSubmit.append('whatsappStore', formData.whatsappStore);
     formDataToSubmit.append('whatsappGroup', formData.whatsappGroup);
     formDataToSubmit.append('anyPamplate', formData.anyPamplate);
+
+    formDataToSubmit.append('interested', formData.interested);
+    formDataToSubmit.append('catalaugefilled', formData.catalaugefilled);
+
     formDataToSubmit.append('customerBase', formData.customerBase);
     formDataToSubmit.append('turnover', formData.turnover);
     formDataToSubmit.append('realEstatePhotos', formData.realEstatePhotos);
@@ -309,6 +317,28 @@ export const Merchantmarketingform = () => {
         <select
           name="anyPamplate"
           value={formData.anyPamplate}
+          onChange={handleChange}
+        >
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+       <div>
+        <label>Is the merchant interested in making a payment? (Yes/No)::</label>
+        <select
+          name="interested"
+          value={formData.interested}
+          onChange={handleChange}
+        >
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+      <div>
+        <label>Has the merchant filled the catalogue? (Yes/No):</label>
+        <select
+          name="catalaugefilled"
+          value={formData.catalaugefilled}
           onChange={handleChange}
         >
           <option value="YES">YES</option>
