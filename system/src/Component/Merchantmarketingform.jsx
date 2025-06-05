@@ -162,6 +162,8 @@ export const Merchantmarketingform = () => {
       .then(data => {
         if (data.success) {
           alert('Marketing data saved successfully!');
+          window.location.reload(); // Refresh the page
+
         } else {
           alert('Error saving marketing data');
         }
