@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 export const Merchantmarketingform = () => {
   const [businesses, setBusinesses] = useState([]); // Store list of businesses
+  const [users, setUsers] = useState([]);
+
   const [selectedMerchant, setSelectedMerchant] = useState({
     mainid: '',  // Store the selected merchant's ID
     businessName: '' // Store the selected merchant's name
@@ -27,6 +29,8 @@ export const Merchantmarketingform = () => {
     
     interested: 'NO',
     catalaugefilled: 'NO',
+    contactPerson: '',
+
 
     shopImage1: null,
     shopImage2: null,
@@ -50,6 +54,18 @@ export const Merchantmarketingform = () => {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []); // Empty dependency array to fetch merchants once
+
+  useEffect(() => {
+  fetch('https://fieldteam.localite.services/api/registrations')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data) {
+        setUsers(data);
+      }
+    })
+    .catch(console.error);
+}, []);
+
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value); // Update search query state
@@ -119,6 +135,8 @@ export const Merchantmarketingform = () => {
 
     formDataToSubmit.append('interested', formData.interested);
     formDataToSubmit.append('catalaugefilled', formData.catalaugefilled);
+    formDataToSubmit.append('contactPerson', formData.contactPerson);
+
 
     formDataToSubmit.append('customerBase', formData.customerBase);
     formDataToSubmit.append('turnover', formData.turnover);
@@ -158,6 +176,23 @@ export const Merchantmarketingform = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div>
+  <label>Select User (Contact Person):</label>
+  <select
+    name="contactPerson"
+    value={formData.contactPerson}
+    onChange={handleChange}
+  >
+    <option value="">-- Select Contact Person --</option>
+    {users.map((user) => (
+      <option key={user._id} value={user.contactPerson}>
+        {user.contactPerson}
+      </option>
+    ))}
+  </select>
+</div>
+
+
       <div>
         <label>Search Merchant by Business Name:</label>
         <input
