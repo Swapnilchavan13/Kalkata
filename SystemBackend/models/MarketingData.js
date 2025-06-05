@@ -24,7 +24,8 @@ const marketingSchema = new mongoose.Schema({
   customerBase: String,
   turnover: String,
   realEstatePhotos: String,
-  mobileNumber: String
+  mobileNumber: String,
+  contactPerson: String
 }, { timestamps: true }); // Adds createdAt & updatedAt fields
 
 const MarketingData = mongoose.model('MarketingData', marketingSchema);
